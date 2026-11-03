@@ -178,7 +178,11 @@ export function LEDVideoPlayer({
   const cssResolutionWidth = 1280;
   const screenAspect = width / height;
   const cssResolutionHeight = Math.round(cssResolutionWidth / screenAspect);
-  const htmlScale = width / cssResolutionWidth;
+  // Drei <Html transform> renders 1 CSS px = (scale / 40) world units
+  // (internal factor = 400 / distanceFactor, default distanceFactor = 10).
+  // Multiply by 40 so the 1280px iframe spans exactly `width` world units of the LED panel.
+  const DREI_HTML_TRANSFORM_FACTOR = 40;
+  const htmlScale = (width / cssResolutionWidth) * DREI_HTML_TRANSFORM_FACTOR;
 
   const nativeTexture = channelState.texture;
 
@@ -237,13 +241,30 @@ export function LEDVideoPlayer({
               borderRadius: '4px'
             }}
           >
-            {/* The mounted YouTube Iframe Container */}
+            {/* The mounted YouTube Iframe Container
+                COVER: size a 16:9 box that fully covers the LED aspect, then crop via overflow-hidden.
+                CONTAIN: fill the panel, YouTube letterboxes internally. */}
             <div
               ref={containerRef}
-              className="w-full h-full"
-              style={{
-                objectFit: channelState.fitMode === FIT_MODES.CONTAIN ? 'contain' : 'cover'
-              }}
+              className="absolute"
+              style={(() => {
+                if (channelState.fitMode === FIT_MODES.CONTAIN) {
+                  return { left: 0, top: 0, width: '100%', height: '100%' };
+                }
+                const videoAspect = 16 / 9;
+                let w = cssResolutionWidth;
+                let h = cssResolutionWidth / videoAspect;
+                if (h < cssResolutionHeight) {
+                  h = cssResolutionHeight;
+                  w = cssResolutionHeight * videoAspect;
+                }
+                return {
+                  width: `${w}px`,
+                  height: `${h}px`,
+                  left: `${(cssResolutionWidth - w) / 2}px`,
+                  top: `${(cssResolutionHeight - h) / 2}px`
+                };
+              })()}
             />
 
             {/* Error Overlay if YouTube video is unavailable / embedding disabled */}
