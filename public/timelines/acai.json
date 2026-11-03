@@ -1,0 +1,109 @@
+[
+  {
+    "time": 0,
+    "type": "scene",
+    "value": "INTRO"
+  },
+  {
+    "time": 0.1,
+    "type": "LED_SOURCE",
+    "target": "MAIN_LED",
+    "sourceType": "YOUTUBE",
+    "source": "nCElUD0jvgo",
+    "loop": true
+  },
+  {
+    "time": 2,
+    "type": "camera",
+    "value": "ORBIT"
+  },
+  {
+    "time": 8,
+    "type": "artist",
+    "value": "DANCE_A"
+  },
+  {
+    "time": 8,
+    "type": "artistMove",
+    "target": "MAIN_STAGE",
+    "duration": 3
+  },
+  {
+    "time": 12,
+    "type": "laser",
+    "value": "on"
+  },
+  {
+    "time": 18,
+    "type": "scene",
+    "value": "CHORUS"
+  },
+  {
+    "time": 18.5,
+    "type": "camera",
+    "value": "SIDE_STAGE"
+  },
+  {
+    "time": 22,
+    "type": "artistMove",
+    "target": "RUNWAY",
+    "duration": 3.8
+  },
+  {
+    "time": 25,
+    "type": "pulseWave",
+    "value": "SPIRAL"
+  },
+  {
+    "time": 34,
+    "type": "drop",
+    "value": "DROP"
+  },
+  {
+    "time": 34,
+    "type": "co2",
+    "value": "burst"
+  },
+  {
+    "time": 34.5,
+    "type": "camera",
+    "value": "WIDE_STAGE"
+  },
+  {
+    "time": 50,
+    "type": "EnergyCallout",
+    "value": "MAKE SOME NOISE"
+  },
+  {
+    "time": 51,
+    "type": "artistMove",
+    "target": "B_STAGE",
+    "duration": 4
+  },
+  {
+    "time": 52,
+    "type": "camera",
+    "value": "B_STAGE"
+  },
+  {
+    "time": 68,
+    "type": "scene",
+    "value": "ENCORE"
+  },
+  {
+    "time": 68.5,
+    "type": "artistMove",
+    "target": "MAIN_STAGE",
+    "duration": 4
+  },
+  {
+    "time": 70,
+    "type": "firework",
+    "value": "burst"
+  },
+  {
+    "time": 75,
+    "type": "camera",
+    "value": "DRONE"
+  }
+]

@@ -123,6 +123,14 @@ export class YouTubeMediaSource extends MediaSource {
       }
       this.containerEl = container;
 
+      // Ensure container is attached to document body staging so YT.Player can locate placeholder.id in DOM
+      if (!document.body.contains(container)) {
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        container.style.top = '-9999px';
+        document.body.appendChild(container);
+      }
+
       // Temporary holder to be replaced by YT.Player iframe
       const placeholder = document.createElement('div');
       placeholder.id = `${this.containerId}-inner`;
@@ -131,12 +139,22 @@ export class YouTubeMediaSource extends MediaSource {
       container.innerHTML = '';
       container.appendChild(placeholder);
 
+      // Safety fallback timeout to prevent hanging if YT API onReady is delayed
+      const safetyTimeout = setTimeout(() => {
+        if (this.state === YOUTUBE_PLAYER_STATES.BUFFERING) {
+          this.state = YOUTUBE_PLAYER_STATES.PLAYING;
+          this.notify();
+          resolve(this);
+        }
+      }, 3500);
+
       this.player = new YT.Player(placeholder.id, {
         videoId: this.videoId,
         width: '100%',
         height: '100%',
         playerVars: {
           autoplay: options.autoPlay ? 1 : 0,
+          mute: 1, // Crucial for browser autoplay policy (prevents browser blocking playback)
           controls: 0,
           disablekb: 1,
           fs: 0,
@@ -144,11 +162,11 @@ export class YouTubeMediaSource extends MediaSource {
           modestbranding: 1,
           rel: 0,
           playsinline: 1,
-          enablejsapi: 1,
-          origin: typeof window !== 'undefined' ? window.location.origin : undefined
+          enablejsapi: 1
         },
         events: {
           onReady: (event) => {
+            clearTimeout(safetyTimeout);
             try {
               this.duration = this.player.getDuration() || 0;
               this.videoTitle = this.player.getVideoData?.()?.title || `YouTube (${this.videoId})`;
@@ -173,7 +191,9 @@ export class YouTubeMediaSource extends MediaSource {
             this.handleStateChange(event.data);
           },
           onError: (event) => {
+            clearTimeout(safetyTimeout);
             this.handleError(event.data);
+            resolve(this);
           }
         }
       });

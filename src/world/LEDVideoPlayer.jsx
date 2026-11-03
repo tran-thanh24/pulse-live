@@ -50,13 +50,29 @@ export function LEDVideoPlayer({
     if (channelState.sourceType === LED_MEDIA_TYPES.YOUTUBE && containerRef.current) {
       const ytSource = channelState.source;
       if (ytSource && ytSource.containerEl) {
+        // Reset container positioning so it properly fills Drei Html container instead of offscreen staging
+        ytSource.containerEl.style.position = 'relative';
+        ytSource.containerEl.style.left = '0';
+        ytSource.containerEl.style.top = '0';
+        ytSource.containerEl.style.width = '100%';
+        ytSource.containerEl.style.height = '100%';
+        ytSource.containerEl.style.display = 'block';
+
+        const iframe = ytSource.containerEl.querySelector('iframe');
+        if (iframe) {
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.style.border = 'none';
+          iframe.style.display = 'block';
+        }
+
         if (!containerRef.current.contains(ytSource.containerEl)) {
           containerRef.current.innerHTML = '';
           containerRef.current.appendChild(ytSource.containerEl);
         }
       }
     }
-  }, [channelState.sourceType, channelState.source]);
+  }, [channelState.sourceType, channelState.source, channelState.state]);
 
   // Frame Loop for Audio-Reactive Canvas & Drift Check
   useFrame((state) => {
@@ -64,7 +80,12 @@ export function LEDVideoPlayer({
       ledMediaManager.checkDriftAndSync();
     }
 
-    if (channelState.sourceType !== LED_MEDIA_TYPES.AUDIO_REACTIVE && channelState.sourceType !== LED_MEDIA_TYPES.NONE) {
+    // Don't redraw canvas if native video texture has its own hardware frame decoder
+    if (
+      channelState.sourceType === LED_MEDIA_TYPES.NATIVE_VIDEO ||
+      channelState.sourceType === LED_MEDIA_TYPES.PROJECT_VIDEO ||
+      channelState.sourceType === LED_MEDIA_TYPES.REMOTE_VIDEO
+    ) {
       return;
     }
 
@@ -172,10 +193,7 @@ export function LEDVideoPlayer({
       {/* 2. LED WebGL Plane */}
       <mesh position={[0, 0, 0]}>
         <planeGeometry args={[width, height]} />
-        {isYouTube ? (
-          // When YouTube is active, WebGL mesh stays matte dark so no texture clashes behind iframe
-          <meshBasicMaterial color="#020308" />
-        ) : nativeTexture ? (
+        {nativeTexture ? (
           <meshBasicMaterial
             map={nativeTexture}
             toneMapped={false}

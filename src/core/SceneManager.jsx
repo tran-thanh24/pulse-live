@@ -8,6 +8,7 @@ import { useUserStore } from '../store/userStore';
 import { showDirector } from '../systems/ShowDirector';
 import { performanceManager } from '../systems/PerformanceManager';
 import { PerformanceHUD } from '../ui/PerformanceHUD';
+import { eventBus } from './EventBus';
 
 /**
  * Master Clock Runner & Performance Diagnostic Link
@@ -31,37 +32,46 @@ function ShowDirectorAndPerformanceRunner() {
 }
 
 /**
- * SceneManager: Hosts the WebGL Three.js Canvas with adaptive DPR & Performance Diagnostics
+ * SceneManager: Hosts the WebGL Three.js Canvas with stable DPR to prevent WebGL Context Loss
  */
 export function SceneManager() {
   const graphicsQuality = useUserStore((s) => s.settings.graphicsQuality);
-  const [dpr, setDpr] = useState(() => performanceManager.getEffectiveDpr());
   const [tier, setTier] = useState(() => performanceManager.getEffectiveTier());
 
   useEffect(() => {
     performanceManager.setUserQualityMode(graphicsQuality);
+    setTier(performanceManager.getEffectiveTier());
   }, [graphicsQuality]);
 
   useEffect(() => {
-    const unsub = performanceManager.subscribe((metrics) => {
-      setDpr(metrics.effectiveDpr);
-      setTier(metrics.activeTier);
+    const unsub = eventBus.on('perf:tierChanged', ({ tier: newTier }) => {
+      setTier(newTier);
     });
     return unsub;
   }, []);
 
-  const spec = performanceManager.getQualitySpec();
+  const dpr = tier === 'LOW' ? 1.0 : tier === 'MEDIUM' ? 1.25 : 1.5;
+  const enableShadows = tier !== 'LOW';
 
   return (
     <div id="nova-canvas-container" className="w-full h-full relative bg-[#070816]">
       <Canvas
-        shadows={spec.shadows}
+        shadows={enableShadows}
         dpr={dpr}
         camera={{ position: [0, 4.5, 41], fov: 55, near: 0.1, far: 160 }}
         gl={{
           preserveDrawingBuffer: true,
-          antialias: spec.antiAlias,
+          antialias: tier !== 'LOW',
           powerPreference: 'high-performance'
+        }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            console.warn('[PULSE] WebGL context lost handled gracefully.');
+          });
+          gl.domElement.addEventListener('webglcontextrestored', () => {
+            console.log('[PULSE] WebGL context restored.');
+          });
         }}
       >
         <Suspense fallback={null}>

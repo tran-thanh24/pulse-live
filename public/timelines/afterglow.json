@@ -1,37 +1,199 @@
 [
-  { "time": 0, "type": "scene", "value": "blackout" },
-  { "time": 1.5, "type": "led", "value": "COUNTDOWN" },
-  { "time": 4.5, "type": "led", "value": "pulse-core-intro" },
-  { "time": 5.0, "type": "scene", "value": "INTRO" },
-  { "time": 6.0, "type": "camera", "value": "WIDE_STAGE" },
-  { "time": 8.0, "type": "spotlight", "target": "artist" },
-  { "time": 8.5, "type": "artist", "value": "WALK" },
-  { "time": 14.0, "type": "scene", "value": "VERSE" },
-  { "time": 14.0, "type": "camera", "value": "ARTIST_CLOSE" },
-  { "time": 14.5, "type": "artist", "value": "SING" },
-  { "time": 15.0, "type": "led", "value": "AUDIO_REACTIVE" },
-  { "time": 24.0, "type": "EnergyCallout", "value": "MAKE SOME NOISE" },
-  { "time": 25.0, "type": "camera", "value": "CRANE" },
-  { "time": 31.2, "type": "crowd", "value": "wave" },
-  { "time": 32.0, "type": "scene", "value": "CHORUS" },
-  { "time": 32.0, "type": "artist", "value": "DANCE_A" },
-  { "time": 32.5, "type": "pulseWave", "value": "CENTER_OUT" },
-  { "time": 45.0, "type": "laser", "value": "on" },
-  { "time": 46.0, "type": "camera", "value": "RUNWAY" },
-  { "time": 46.5, "type": "artist", "value": "RUNWAY" },
-  { "time": 60.0, "type": "lightstick", "value": "sync" },
-  { "time": 60.5, "type": "pulseWave", "value": "LEFT_TO_RIGHT" },
-  { "time": 62.0, "type": "camera", "value": "CROWD" },
-  { "time": 75.0, "type": "led", "value": "PULSE_PATTERN" },
-  { "time": 76.0, "type": "EnergyCallout", "value": "MAKE SOME NOISE" },
-  { "time": 91.4, "type": "drop", "value": "DROP" },
-  { "time": 91.4, "type": "co2", "value": "burst" },
-  { "time": 91.4, "type": "artist", "value": "DANCE_B" },
-  { "time": 91.4, "type": "pulseWave", "value": "STAGE_TO_BACK" },
-  { "time": 92.0, "type": "camera", "value": "WIDE_STAGE" },
-  { "time": 110.0, "type": "scene", "value": "ENCORE" },
-  { "time": 110.5, "type": "camera", "value": "DRONE" },
-  { "time": 112.0, "type": "confetti", "value": "burst" },
-  { "time": 115.0, "type": "artist", "value": "FINAL_POSE" }
+  {
+    "time": 0,
+    "type": "scene",
+    "value": "blackout"
+  },
+  {
+    "time": 0.1,
+    "type": "LED_SOURCE",
+    "target": "MAIN_LED",
+    "sourceType": "YOUTUBE",
+    "source": "e2OpbOv_JiQ",
+    "loop": true
+  },
+  {
+    "time": 1.5,
+    "type": "led",
+    "value": "COUNTDOWN"
+  },
+  {
+    "time": 4.5,
+    "type": "led",
+    "value": "pulse-core-intro"
+  },
+  {
+    "time": 5,
+    "type": "scene",
+    "value": "INTRO"
+  },
+  {
+    "time": 6,
+    "type": "camera",
+    "value": "WIDE_STAGE"
+  },
+  {
+    "time": 8,
+    "type": "spotlight",
+    "target": "artist"
+  },
+  {
+    "time": 8.5,
+    "type": "artist",
+    "value": "WALK"
+  },
+  {
+    "time": 8.5,
+    "type": "artistMove",
+    "target": "MAIN_STAGE",
+    "duration": 3
+  },
+  {
+    "time": 14,
+    "type": "scene",
+    "value": "VERSE"
+  },
+  {
+    "time": 14,
+    "type": "camera",
+    "value": "ARTIST_CLOSE"
+  },
+  {
+    "time": 14.5,
+    "type": "artist",
+    "value": "SING"
+  },
+  {
+    "time": 24,
+    "type": "EnergyCallout",
+    "value": "MAKE SOME NOISE"
+  },
+  {
+    "time": 25,
+    "type": "camera",
+    "value": "CRANE"
+  },
+  {
+    "time": 31.2,
+    "type": "crowd",
+    "value": "wave"
+  },
+  {
+    "time": 32,
+    "type": "scene",
+    "value": "CHORUS"
+  },
+  {
+    "time": 32,
+    "type": "artist",
+    "value": "DANCE_A"
+  },
+  {
+    "time": 32.5,
+    "type": "pulseWave",
+    "value": "CENTER_OUT"
+  },
+  {
+    "time": 45,
+    "type": "laser",
+    "value": "on"
+  },
+  {
+    "time": 46,
+    "type": "camera",
+    "value": "RUNWAY"
+  },
+  {
+    "time": 46.2,
+    "type": "artist",
+    "value": "RUNWAY"
+  },
+  {
+    "time": 46.2,
+    "type": "artistMove",
+    "target": "RUNWAY",
+    "duration": 4
+  },
+  {
+    "time": 60,
+    "type": "lightstick",
+    "value": "sync"
+  },
+  {
+    "time": 60.5,
+    "type": "pulseWave",
+    "value": "LEFT_TO_RIGHT"
+  },
+  {
+    "time": 62,
+    "type": "camera",
+    "value": "CROWD"
+  },
+  {
+    "time": 65,
+    "type": "artistMove",
+    "target": "B_STAGE",
+    "duration": 4.5
+  },
+  {
+    "time": 66,
+    "type": "camera",
+    "value": "B_STAGE"
+  },
+  {
+    "time": 76,
+    "type": "EnergyCallout",
+    "value": "MAKE SOME NOISE"
+  },
+  {
+    "time": 84,
+    "type": "artistMove",
+    "target": "MAIN_STAGE",
+    "duration": 4.5
+  },
+  {
+    "time": 91.4,
+    "type": "drop",
+    "value": "DROP"
+  },
+  {
+    "time": 91.4,
+    "type": "co2",
+    "value": "burst"
+  },
+  {
+    "time": 91.4,
+    "type": "artist",
+    "value": "DANCE_B"
+  },
+  {
+    "time": 91.4,
+    "type": "pulseWave",
+    "value": "STAGE_TO_BACK"
+  },
+  {
+    "time": 92,
+    "type": "camera",
+    "value": "WIDE_STAGE"
+  },
+  {
+    "time": 110,
+    "type": "scene",
+    "value": "ENCORE"
+  },
+  {
+    "time": 110.5,
+    "type": "camera",
+    "value": "DRONE"
+  },
+  {
+    "time": 112,
+    "type": "confetti",
+    "value": "burst"
+  },
+  {
+    "time": 115,
+    "type": "artist",
+    "value": "FINAL_POSE"
+  }
 ]
-

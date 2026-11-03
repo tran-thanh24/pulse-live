@@ -134,12 +134,8 @@ class PerformanceManager {
   getEffectiveDpr() {
     const spec = this.getQualitySpec();
     const systemDpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
-    let targetDpr = Math.min(spec.maxDpr, systemDpr);
-
-    // If player is moving fast or camera is in rapid motion, drop DPR slightly for silky frame rate
-    if (this.isMovingFast) {
-      targetDpr = Math.max(spec.minDpr, targetDpr * 0.85);
-    }
+    // Stable DPR pinned by quality tier to prevent canvas buffer reallocations & WebGL context loss
+    const targetDpr = Math.min(spec.maxDpr, systemDpr);
     this.effectiveDpr = Number(targetDpr.toFixed(2));
     return this.effectiveDpr;
   }
@@ -310,3 +306,4 @@ class PerformanceManager {
 }
 
 export const performanceManager = new PerformanceManager();
+
