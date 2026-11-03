@@ -150,7 +150,7 @@ export function PulseCore() {
   if (!pulseCoreVisible) return null;
 
   return (
-    <group position={[0, 6.8, -3.4]}>
+    <group position={[0, 11.6, -3.4]}>
       {/* 1. Outer Low-Bass Architectural Torus Ring */}
       <mesh ref={outerRingRef}>
         <torusGeometry args={[4.2, 0.22, 20, 64]} />

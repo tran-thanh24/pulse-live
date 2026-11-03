@@ -25,11 +25,11 @@ export const STAGE_CONFIG = {
       restrictedReason: 'ARTIST AREA — MAIN STAGE'
     },
     waypoints: {
-      CENTER: [0, 1.4, -20.5],
-      FRONT_EDGE: [0, 1.4, -16.8],
-      RISER_TOP: [0, 2.3, -23.8],
-      LEFT_MARK: [-5.5, 1.4, -20.2],
-      RIGHT_MARK: [5.5, 1.4, -20.2]
+      CENTER: [0, 1.45, -17.0],
+      FRONT_EDGE: [0, 1.45, -16.5],
+      RISER_TOP: [0, 2.32, -23.8],
+      LEFT_MARK: [-4.5, 1.45, -17.5],
+      RIGHT_MARK: [4.5, 1.45, -17.5]
     }
   },
   RUNWAY: {

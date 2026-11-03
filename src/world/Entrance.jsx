@@ -39,7 +39,7 @@ export function Entrance() {
         </group>
       ))}
 
-      <Html position={[0, 6.3, -0.7]} center distanceFactor={22} zIndexRange={[5, 0]}>
+      <Html position={[0, 6.3, -0.7]} center distanceFactor={22} zIndexRange={[8, 3]}>
         <div className="px-4 py-1.5 rounded-xl bg-[#070816]/90 border border-[#22D3EE]/50 text-center pointer-events-none shadow-lg">
           <div className="text-[10px] tracking-[0.25em] text-[#22D3EE] font-heading font-bold">
             ENTRY // VERIFIED

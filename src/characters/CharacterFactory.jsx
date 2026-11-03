@@ -585,7 +585,7 @@ export function CharacterFactory({
           5. FLOATING NAME TAG & ROLE BADGE
           ========================================== */}
       {showLabel && !isPreview && char.displayName && (
-        <Html position={[0, 2.22, 0]} center distanceFactor={14} zIndexRange={[10, 0]}>
+        <Html position={[0, 2.22, 0]} center distanceFactor={14} zIndexRange={[9, 3]}>
           <div className="px-2.5 py-0.5 rounded-full bg-[#070816]/85 border border-white/15 backdrop-blur-md text-[11px] font-semibold text-white whitespace-nowrap flex items-center gap-1.5 shadow-lg pointer-events-none select-none">
             <span
               className="w-2 h-2 rounded-full"

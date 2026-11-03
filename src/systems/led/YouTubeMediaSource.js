@@ -87,8 +87,8 @@ export class YouTubeMediaSource extends MediaSource {
     this.containerId = `yt-embed-${this.screenId}`;
     this.containerEl = null;
     this.timePollTimer = null;
-    this.volume = 0.85;
-    this.muted = false;
+    this.volume = 0;
+    this.muted = true; // Always muted by default: master audio is driven by MusicEngine
     this.loop = true;
   }
 
@@ -104,6 +104,28 @@ export class YouTubeMediaSource extends MediaSource {
     this.rawUrl = inputUrlOrId;
     this.videoId = vidId;
     this.error = null;
+    const shouldAutoPlay = options.autoPlay ?? true;
+
+    // Fast-path: if YouTube player instance already exists, reuse it via loadVideoById without rebuilding iframe!
+    if (this.player && typeof this.player.loadVideoById === 'function') {
+      try {
+        if (shouldAutoPlay) {
+          this.player.loadVideoById(this.videoId);
+          this.state = YOUTUBE_PLAYER_STATES.PLAYING;
+        } else {
+          this.player.cueVideoById(this.videoId);
+          this.state = YOUTUBE_PLAYER_STATES.CUED;
+        }
+        this.player.mute();
+        this.player.setVolume(0);
+        this.startTimePolling();
+        this.notify();
+        return this;
+      } catch (err) {
+        console.warn('[YouTubeMediaSource] loadVideoById error, falling back to full player rebuild:', err);
+      }
+    }
+
     this.state = YOUTUBE_PLAYER_STATES.BUFFERING;
     this.notify();
 
@@ -170,11 +192,10 @@ export class YouTubeMediaSource extends MediaSource {
             try {
               this.duration = this.player.getDuration() || 0;
               this.videoTitle = this.player.getVideoData?.()?.title || `YouTube (${this.videoId})`;
-              this.player.setVolume(Math.round(this.volume * 100));
-              if (this.muted) this.player.mute();
-              else this.player.unMute();
+              this.player.mute();
+              this.player.setVolume(0);
 
-              if (options.autoPlay) {
+              if (shouldAutoPlay) {
                 event.target.playVideo();
                 this.state = YOUTUBE_PLAYER_STATES.PLAYING;
               } else {

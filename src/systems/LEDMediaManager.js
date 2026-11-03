@@ -101,7 +101,7 @@ class LEDMediaManager {
         const mainCh = this.getChannel('MAIN_LED');
         mainCh.setSource(LED_MEDIA_TYPES.YOUTUBE, track.youtubeVideoId, {
           loop: true,
-          autoPlay: musicEngine.isPlaying()
+          autoPlay: true
         });
       }
     });
@@ -265,7 +265,13 @@ class LEDMediaManager {
         if (typeof cfg.syncOffset === 'number') ch.setSyncOffset(cfg.syncOffset);
 
         if (cfg.sourceType && cfg.sourceType !== LED_MEDIA_TYPES.LOCAL_VIDEO) {
-          ch.setSource(cfg.sourceType, cfg.sourceInput, {
+          // Keep side screens on Audio-Reactive Canvas unless explicitly configured with non-youtube
+          const finalType =
+            (id === 'LEFT_LED' || id === 'RIGHT_LED') && cfg.sourceType === LED_MEDIA_TYPES.YOUTUBE
+              ? LED_MEDIA_TYPES.AUDIO_REACTIVE
+              : cfg.sourceType;
+
+          ch.setSource(finalType, cfg.sourceInput, {
             loop: cfg.loop ?? true,
             autoPlay: false
           });

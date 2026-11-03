@@ -7,6 +7,8 @@ import { audioManager } from '../core/AudioManager';
 import { MUSIC_MANIFEST } from '../data/musicManifest';
 import { setlistManager } from './SetlistManager';
 import { mediaPreloader } from './MediaPreloader';
+import { ledMediaManager } from './LEDMediaManager';
+import { LED_MEDIA_TYPES } from './led/LEDConstants';
 
 /**
  * ShowDirector: Central show state machine & orchestrator for PULSE//LIVE 2026
@@ -242,6 +244,13 @@ class ShowDirector {
       st.setLightingScene('ENCORE');
     }
 
+    if (track?.youtubeVideoId) {
+      ledMediaManager.getChannel('MAIN_LED')?.setSource(LED_MEDIA_TYPES.YOUTUBE, track.youtubeVideoId, {
+        loop: true,
+        autoPlay: true
+      });
+    }
+
     await musicEngine.crossfadeToTrack(track, autoPlay ? 0.8 : 0);
     if (!autoPlay) {
       musicEngine.pause();
@@ -283,6 +292,14 @@ class ShowDirector {
     concertStore.getState().setCurrentTrack(track);
     concertStore.getState().setPreShowCountdown(0);
     concertStore.getState().setShowState('PERFORMANCE');
+
+    if (track?.youtubeVideoId) {
+      ledMediaManager.getChannel('MAIN_LED')?.setSource(LED_MEDIA_TYPES.YOUTUBE, track.youtubeVideoId, {
+        loop: true,
+        autoPlay: true
+      });
+    }
+
     await musicEngine.crossfadeToTrack(track, autoPlay ? 0.65 : 0);
     if (!autoPlay) musicEngine.pause();
     await concertTimeline.loadTimeline(track.timeline);

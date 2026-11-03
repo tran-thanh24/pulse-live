@@ -27,7 +27,7 @@ export function FoodZone() {
         <meshStandardMaterial color="#090D1E" />
       </mesh>
 
-      <Html position={[0, 3.7, 0]} center distanceFactor={20} zIndexRange={[5, 0]}>
+      <Html position={[0, 3.7, 0]} center distanceFactor={20} zIndexRange={[8, 3]}>
         <div className="px-3.5 py-1 rounded-xl bg-[#070816]/90 border border-[#22D3EE]/60 text-center pointer-events-none">
           <div className="text-[10px] tracking-[0.2em] text-[#22D3EE] font-heading font-bold">
             ACOUSTIC LOUNGE

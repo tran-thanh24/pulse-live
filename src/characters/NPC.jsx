@@ -199,7 +199,7 @@ export function NPC({
       </group>
 
       {name && (
-        <Html position={[0, 2.15, 0]} center distanceFactor={18} zIndexRange={[5, 0]}>
+        <Html position={[0, 2.15, 0]} center distanceFactor={18} zIndexRange={[8, 3]}>
           <div className="px-2 py-0.5 rounded-md bg-[#070816]/85 border border-white/15 text-[10px] font-heading tracking-wider text-white/90 whitespace-nowrap pointer-events-none">
             <span className="text-[#22D3EE] font-bold">{name}</span>
             {role ? <span className="text-zinc-400 ml-1">· {role}</span> : null}

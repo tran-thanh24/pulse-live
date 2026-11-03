@@ -223,9 +223,9 @@ export function MainStage() {
       {/* Channel 1: MAIN_LED (Center Giant 16:9 Architectural Screen) */}
       <LEDVideoPlayer
         channelId="MAIN_LED"
-        width={19.5}
-        height={9.4}
-        position={[0, 7.2, -5.4]}
+        width={18.0}
+        height={8.2}
+        position={[0, 5.8, -5.6]}
       />
 
       {/* Channel 2: LEFT_LED (Left Wing Screen — defaults to LIVE_CAM broadcast feed!) */}
@@ -338,22 +338,22 @@ export function MainStage() {
         </group>
       ))}
 
-      {/* Security Barrier at z = -13.8 world (local z = +8.2) */}
+      {/* Security Barrier at z = -13.8 world (local z = +8.2) — low barricade so stage artists remain 100% visible */}
       <group position={[0, 0, 8.2]}>
-        <mesh position={[-9.5, 0.6, 0]}>
-          <boxGeometry args={[12, 1.2, 0.25]} />
+        <mesh position={[-9.5, 0.45, 0]}>
+          <boxGeometry args={[12, 0.9, 0.25]} />
           <meshStandardMaterial color="#1F2937" metalness={0.8} roughness={0.3} />
         </mesh>
-        <mesh position={[-9.5, 1.22, 0]}>
-          <boxGeometry args={[12, 0.05, 0.28]} />
+        <mesh position={[-9.5, 0.92, 0]}>
+          <boxGeometry args={[12, 0.04, 0.28]} />
           <meshBasicMaterial color="#EF4444" />
         </mesh>
-        <mesh position={[9.5, 0.6, 0]}>
-          <boxGeometry args={[12, 1.2, 0.25]} />
+        <mesh position={[9.5, 0.45, 0]}>
+          <boxGeometry args={[12, 0.9, 0.25]} />
           <meshStandardMaterial color="#1F2937" metalness={0.8} roughness={0.3} />
         </mesh>
-        <mesh position={[9.5, 1.22, 0]}>
-          <boxGeometry args={[12, 0.05, 0.28]} />
+        <mesh position={[9.5, 0.92, 0]}>
+          <boxGeometry args={[12, 0.04, 0.28]} />
           <meshBasicMaterial color="#EF4444" />
         </mesh>
       </group>

@@ -30,7 +30,7 @@ export function FanZone() {
         </group>
       ))}
 
-      <Html position={[-9, 0.4, -2]} center distanceFactor={18} zIndexRange={[5, 0]}>
+      <Html position={[-9, 0.4, -2]} center distanceFactor={18} zIndexRange={[8, 3]}>
         <div className="px-3 py-1 rounded-full bg-[#070816]/80 border border-[#8B5CF6]/50 text-[10px] font-heading font-bold tracking-widest text-[#C4B5FD] whitespace-nowrap pointer-events-none">
           MAIN ARENA // GA STANDING
         </div>

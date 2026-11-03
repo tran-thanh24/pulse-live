@@ -54,7 +54,7 @@ export function MerchZone() {
         </mesh>
       </group>
 
-      <Html position={[0, 4.1, 1.5]} center distanceFactor={20} zIndexRange={[5, 0]}>
+      <Html position={[0, 4.1, 1.5]} center distanceFactor={20} zIndexRange={[8, 3]}>
         <div className="px-3.5 py-1.5 rounded-xl bg-[#070816]/90 border border-[#EC4899]/60 text-center pointer-events-none shadow-lg">
           <div className="text-[10px] tracking-[0.2em] text-[#EC4899] font-heading font-bold">
             OFFICIAL GEAR

@@ -37,7 +37,7 @@ export function PhotoZone() {
         <meshBasicMaterial color="#22D3EE" />
       </mesh>
 
-      <Html position={[0, 4.1, 0]} center distanceFactor={20} zIndexRange={[5, 0]}>
+      <Html position={[0, 4.1, 0]} center distanceFactor={20} zIndexRange={[8, 3]}>
         <div className="px-3.5 py-1.5 rounded-xl bg-[#070816]/90 border border-[#FACC15]/60 text-center pointer-events-none shadow-lg">
           <div className="text-[10px] tracking-[0.2em] text-[#FACC15] font-heading font-bold">
             FRAME THE BEAT

@@ -127,7 +127,7 @@ class StageNavigationSystem {
     // MAIN_STAGE / WINGS / BACKSTAGE
     return [
       Math.max(-14.2, Math.min(14.2, x)),
-      y || 1.4,
+      y || 1.45,
       Math.max(-32.0, Math.min(-14.5, z))
     ];
   }
