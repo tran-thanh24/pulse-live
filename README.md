@@ -197,4 +197,4 @@ Concert/
 ## 📜 GIẤY PHÉP (LICENSE)
 
 Dự án phát hành dưới giấy phép **MIT License**.  
-Bản quyền thuộc về đội ngũ phát triển **PULSE//LIVE 2026 — City of Sound**.
+Bản quyền thuộc về đội ngũ phát triển **Trần Thành**.
