@@ -114,9 +114,11 @@ export const useConcertStore = create((set, get) => ({
   //Adaptive FPS performance tier
   adaptiveTier: 'HIGH',
   currentFps: 60,
+  devMode: false,
 
   // Actions
   setScreen: (screen) => set({ currentScreen: screen, activeModal: null }),
+  setDevMode: (devMode) => set({ devMode }),
   setStudioMode: (studioMode) => set({ studioMode }),
   toggleStudioMode: () => set((s) => ({ studioMode: !s.studioMode })),
   setOnlineCount: (onlineCount) => set({ onlineCount }),

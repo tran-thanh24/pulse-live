@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useConcertStore } from '../store/concertStore';
 import { cameraDirector } from '../systems/CameraDirector';
+import { performanceManager } from '../systems/PerformanceManager';
 
 /**
  * CameraController: Mouse drag to orbit camera around player + Scroll wheel zoom + CameraDirector presets
@@ -24,6 +25,7 @@ export function CameraController() {
 
     const onPointerMove = (e) => {
       if (!isDraggingRef.current) return;
+      performanceManager.notifyMovement(true);
       const dx = e.clientX - prevPointerRef.current.x;
       const dy = e.clientY - prevPointerRef.current.y;
       prevPointerRef.current = { x: e.clientX, y: e.clientY };

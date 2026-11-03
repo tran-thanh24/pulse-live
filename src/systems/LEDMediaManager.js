@@ -6,6 +6,7 @@ import { eventBus } from '../core/EventBus';
 import { musicEngine } from '../core/MusicEngine';
 import { LED_SCREENS, LED_MEDIA_TYPES, FIT_MODES } from './led/LEDConstants';
 import { LEDChannel } from './led/LEDChannel';
+import { performanceManager } from './PerformanceManager';
 
 export const LED_CHANNELS = [
   LED_SCREENS.MAIN_LED,
@@ -104,6 +105,27 @@ class LEDMediaManager {
         });
       }
     });
+
+    // 4. Tab Visibility Throttle (Rule 52: pause video decode when tab is backgrounded)
+    eventBus.on('perf:visibilityChanged', ({ isHidden }) => {
+      if (isHidden) {
+        Object.values(this.channels).forEach((ch) => {
+          if (ch.source && ch.source.state === 'PLAYING') {
+            ch.source.pause();
+            ch.wasPausedByTab = true;
+          }
+        });
+      } else {
+        Object.values(this.channels).forEach((ch) => {
+          if (ch.wasPausedByTab) {
+            ch.wasPausedByTab = false;
+            if (musicEngine.isPlaying()) {
+              ch.source.play();
+            }
+          }
+        });
+      }
+    });
   }
 
   handleTimelineCue(cue) {
@@ -174,6 +196,24 @@ class LEDMediaManager {
   }
 
   notify() {
+    // Update active video & YouTube count in performanceManager (Rule 20)
+    let vCount = 0;
+    let ytCount = 0;
+    Object.values(this.channels).forEach((ch) => {
+      if (ch.sourceType === LED_MEDIA_TYPES.YOUTUBE && ch.source?.state === 'PLAYING') {
+        ytCount++;
+      } else if (
+        (ch.sourceType === LED_MEDIA_TYPES.LOCAL_VIDEO ||
+         ch.sourceType === LED_MEDIA_TYPES.PROJECT_VIDEO ||
+         ch.sourceType === LED_MEDIA_TYPES.REMOTE_VIDEO) &&
+        ch.source?.state === 'PLAYING'
+      ) {
+        vCount++;
+      }
+    });
+    performanceManager.activeVideos = vCount;
+    performanceManager.activeYouTubePlayers = ytCount;
+
     const snapshot = this.getChannelStates();
     this.listeners.forEach((cb) => {
       try {

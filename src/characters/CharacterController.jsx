@@ -9,6 +9,7 @@ import { audioManager } from '../core/AudioManager';
 import { realtimeService, presenceService } from '../services/realtime';
 import { useConcertStore } from '../store/concertStore';
 import { useUserStore } from '../store/userStore';
+import { performanceManager } from '../systems/PerformanceManager';
 
 /**
  * CharacterController: Handles keyboard/joystick movement (WASD / Arrows / Shift / Space),
@@ -125,12 +126,23 @@ export function CharacterController({ children }) {
       groupRef.current.rotation.y = result.rotation;
     }
 
-    if (
-      result.isMoving ||
-      result.isJumping ||
+    // Keep store mutable reference updated without triggering 60fps React render (Rule 26 & 27)
+    cStore.playerPosition = result.position;
+    cStore.playerRotation = result.rotation;
+
+    performanceManager.notifyMovement(result.isMoving || result.isJumping);
+
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const boolChanged =
       result.isRunning !== cStore.isPlayerRunning ||
-      result.isMoving !== cStore.isPlayerMoving
+      result.isMoving !== cStore.isPlayerMoving ||
+      result.isJumping !== cStore.isPlayerJumping;
+
+    if (
+      boolChanged ||
+      (result.isMoving && (!groupRef.current.lastTransformSync || now - groupRef.current.lastTransformSync >= 120))
     ) {
+      groupRef.current.lastTransformSync = now;
       cStore.setPlayerTransform(
         result.position,
         result.rotation,

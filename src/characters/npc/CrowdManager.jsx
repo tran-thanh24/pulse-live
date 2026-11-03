@@ -11,6 +11,7 @@ import { computePulseLightVisual } from '../../systems/LightstickSystem';
 import { realtimeService } from '../../services/realtime';
 import { CrowdCharacter } from './CrowdCharacter';
 import { CharacterFactory } from '../CharacterFactory';
+import { performanceManager } from '../../systems/PerformanceManager';
 
 function RemotePeerCharacter({ peer }) {
   const groupRef = useRef();
@@ -91,12 +92,15 @@ export function CrowdManager() {
     return unsub;
   }, []);
 
-  const maxCount = 220;
-  const activeCount = useMemo(() => {
-    if (crowdDensity === 'LOW' || adaptiveTier === 'LOW') return 80;
-    if (crowdDensity === 'MEDIUM' || adaptiveTier === 'MEDIUM') return 145;
-    return 220;
-  }, [crowdDensity, adaptiveTier]);
+  const maxCount = 200;
+  const effectiveTier = performanceManager.getEffectiveTier();
+  const spec = performanceManager.getQualitySpec();
+  const activeCount = Math.min(maxCount, spec.crowdCount || 120);
+  const frameTickRef = useRef(0);
+
+  useEffect(() => {
+    performanceManager.crowdCount = activeCount;
+  }, [activeCount]);
 
   // Security Guard Character Configs
   const securityGuards = useMemo(() => {
@@ -199,6 +203,8 @@ export function CrowdManager() {
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const tempColor = useMemo(() => new THREE.Color(), []);
 
+  const lastActiveCountRef = useRef(-1);
+
   useFrame((state) => {
     if (!bodyMeshRef.current || !headMeshRef.current || !stickMeshRef.current) return;
 
@@ -208,6 +214,19 @@ export function CrowdManager() {
     const { bass, energy } = cStore.audioAnalysis;
     const pulseWaveState = cStore.pulseWaveState;
     const override = cStore.crowdBehaviorOverride;
+
+    // One-time hide of inactive instances when activeCount changes
+    if (lastActiveCountRef.current !== activeCount) {
+      lastActiveCountRef.current = activeCount;
+      dummy.position.set(0, -999, 0);
+      dummy.scale.set(0, 0, 0);
+      dummy.updateMatrix();
+      for (let i = activeCount; i < maxCount; i++) {
+        bodyMeshRef.current.setMatrixAt(i, dummy.matrix);
+        headMeshRef.current.setMatrixAt(i, dummy.matrix);
+        stickMeshRef.current.setMatrixAt(i, dummy.matrix);
+      }
+    }
 
     let jumpAmp = 0.06 + energy * 0.14;
     let jumpFreq = 1.4 + bass * 1.2;
@@ -228,14 +247,13 @@ export function CrowdManager() {
       jumpFreq *= 0.5;
     }
 
-    for (let i = 0; i < maxCount; i++) {
-      if (i >= activeCount) {
-        dummy.position.set(0, -50, 0);
-        dummy.scale.set(0, 0, 0);
-        dummy.updateMatrix();
-        bodyMeshRef.current.setMatrixAt(i, dummy.matrix);
-        headMeshRef.current.setMatrixAt(i, dummy.matrix);
-        stickMeshRef.current.setMatrixAt(i, dummy.matrix);
+    // Interleaved Grouping: 2 groups when moving or on Low/Medium (Rule 11)
+    const isInterleaved = !pulseWaveState.active && (performanceManager.isMovingFast || effectiveTier === 'LOW');
+    frameTickRef.current = (frameTickRef.current + 1) % 2;
+    const activeSubGroup = frameTickRef.current;
+
+    for (let i = 0; i < activeCount; i++) {
+      if (isInterleaved && i % 2 !== activeSubGroup) {
         continue;
       }
 
@@ -304,8 +322,8 @@ export function CrowdManager() {
         />
       ))}
 
-      {/* 2. Front-Row Male & Female Hero Crowd Characters */}
-      {heroFans.map((hero) => (
+      {/* 2. Front-Row Male & Female Hero Crowd Characters (Only in High quality, Rule 8 & 9) */}
+      {(effectiveTier === 'HIGH' ? heroFans : effectiveTier === 'MEDIUM' ? heroFans.slice(0, 2) : []).map((hero) => (
         <CrowdCharacter
           key={hero.id}
           config={hero.config}
@@ -317,7 +335,7 @@ export function CrowdManager() {
       ))}
 
       {/* 3. GPU-Instanced Crowd Fans (LOD Optimized) */}
-      <instancedMesh ref={bodyMeshRef} args={[null, null, maxCount]} castShadow>
+      <instancedMesh ref={bodyMeshRef} args={[null, null, maxCount]} castShadow={spec.shadows}>
         <capsuleGeometry args={[0.21, 0.62, 6, 10]} />
         <meshStandardMaterial roughness={0.6} />
       </instancedMesh>

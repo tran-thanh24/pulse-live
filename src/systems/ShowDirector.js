@@ -299,7 +299,19 @@ class ShowDirector {
     }
 
     audienceEnergySystem.updatePassiveCrowdEnergy(delta, analysis.energy);
-    state.syncMasterClock(currentTime, isPlaying, analysis);
+
+    // Keep store mutable reference updated for instantaneous useFrame WebGL readers
+    state.audioAnalysis = analysis;
+    state.concertTime = currentTime;
+    state.isConcertPlaying = isPlaying;
+
+    // Throttle React state notification to ~6.5 Hz (Rule 26 & 28: no 60fps React state churn)
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    if (!this.lastUiSyncTime || now - this.lastUiSyncTime >= 150 || isPlaying !== this.lastIsPlaying) {
+      this.lastUiSyncTime = now;
+      this.lastIsPlaying = isPlaying;
+      state.syncMasterClock(currentTime, isPlaying, analysis);
+    }
   }
 }
 

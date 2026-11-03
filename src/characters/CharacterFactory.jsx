@@ -372,13 +372,17 @@ export function CharacterFactory({
                 <torusGeometry args={[0.12, 0.014, 12, 24]} />
                 <meshBasicMaterial color="#FFFFFF" />
               </mesh>
-              <pointLight
-                ref={pulsePointLightRef}
-                position={[0, 0.24, 0]}
-                color={char.lightstick || '#22D3EE'}
-                intensity={2.2}
-                distance={5.5}
-              />
+              {/* Only local controllable player on High quality gets a subtle proximity glow; NPCs use emissive material (Rule 40) */}
+              {char.role === 'PLAYER' && !isPreview && (
+                <pointLight
+                  ref={pulsePointLightRef}
+                  position={[0, 0.24, 0]}
+                  color={char.lightstick || '#22D3EE'}
+                  intensity={1.5}
+                  distance={4.0}
+                  decay={2}
+                />
+              )}
             </group>
           )}
         </group>

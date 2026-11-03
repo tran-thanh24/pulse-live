@@ -18,7 +18,6 @@ export function PlayerCharacter() {
   const isJumping = useConcertStore((s) => s.isPlayerJumping);
   const playerPose = useConcertStore((s) => s.playerPose);
   const lightstickMode = useConcertStore((s) => s.lightstickMode);
-  const playerPosition = useConcertStore((s) => s.playerPosition);
 
   let animationState = 'IDLE';
   if (playerPose && playerPose !== 'idle') {
@@ -45,7 +44,6 @@ export function PlayerCharacter() {
         lightstickMode={lightstickMode}
         showLabel
         labelBadge={ticket?.tier === 'VIP' ? 'VIP' : 'GA'}
-        worldPosition={playerPosition}
       />
     </CharacterController>
   );

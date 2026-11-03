@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { useConcertStore } from '../store/concertStore';
 import { useUserStore } from '../store/userStore';
 import { CONCERT_CONFIG } from '../data/concert';
+import { performanceManager } from '../systems/PerformanceManager';
 
 const tempPrimary = new THREE.Color();
 const tempSecondary = new THREE.Color();
@@ -80,9 +81,12 @@ export function LightingManager() {
     }
   });
 
+  const spec = performanceManager.getQualitySpec();
+  const isLow = performanceManager.getEffectiveTier() === 'LOW';
+
   return (
     <group>
-      <ambientLight ref={ambientRef} intensity={0.5} color="#BAE6FD" />
+      <ambientLight ref={ambientRef} intensity={isLow ? 0.65 : 0.5} color="#BAE6FD" />
 
       <hemisphereLight args={['#22D3EE', '#070816', 0.55]} />
 
@@ -90,15 +94,21 @@ export function LightingManager() {
         position={[8, 22, 16]}
         intensity={1.05}
         color="#F8FAFC"
-        castShadow={enableShadows}
-        shadow-mapSize={[1024, 1024]}
+        castShadow={spec.shadows}
+        shadow-mapSize={[spec.shadowMapSize, spec.shadowMapSize]}
+        shadow-camera-near={1}
+        shadow-camera-far={60}
+        shadow-camera-left={-22}
+        shadow-camera-right={22}
+        shadow-camera-top={22}
+        shadow-camera-bottom={-22}
       />
 
       <pointLight
         ref={mainSpotLeftRef}
         position={[-8, 11, -16]}
-        intensity={2.8}
-        distance={42}
+        intensity={isLow ? 2.0 : 2.8}
+        distance={isLow ? 24 : 32}
         decay={1.8}
         color="#22D3EE"
       />
@@ -106,29 +116,33 @@ export function LightingManager() {
       <pointLight
         ref={mainSpotRightRef}
         position={[8, 11, -16]}
-        intensity={2.8}
-        distance={42}
+        intensity={isLow ? 2.0 : 2.8}
+        distance={isLow ? 24 : 32}
         decay={1.8}
         color="#8B5CF6"
       />
 
-      <pointLight
-        ref={stageBacklightRef}
-        position={[0, 7, -12]}
-        intensity={3.0}
-        distance={36}
-        decay={1.8}
-        color="#EC4899"
-      />
+      {!isLow && (
+        <>
+          <pointLight
+            ref={stageBacklightRef}
+            position={[0, 7, -12]}
+            intensity={2.6}
+            distance={28}
+            decay={1.8}
+            color="#EC4899"
+          />
 
-      <pointLight
-        ref={plazaLightRef}
-        position={[0, 9, 24]}
-        intensity={1.5}
-        distance={38}
-        decay={2}
-        color="#22D3EE"
-      />
+          <pointLight
+            ref={plazaLightRef}
+            position={[0, 9, 24]}
+            intensity={1.2}
+            distance={28}
+            decay={2}
+            color="#22D3EE"
+          />
+        </>
+      )}
     </group>
   );
 }

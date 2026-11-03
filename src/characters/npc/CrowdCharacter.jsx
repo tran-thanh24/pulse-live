@@ -17,6 +17,8 @@ export function CrowdCharacter({
   phaseOffset = 0
 }) {
   const groupRef = useRef();
+  const tickRef = useRef(Math.floor(Math.random() * 4));
+  const targetYawRef = useRef(baseRotation);
   const [securityAlert, setSecurityAlert] = useState(false);
 
   const lightingScene = useConcertStore((s) => s.lightingScene);
@@ -26,26 +28,29 @@ export function CrowdCharacter({
     if (!groupRef.current) return;
 
     if (isSecurity) {
-      const [px, , pz] = useConcertStore.getState().playerPosition;
-      const dx = px - position[0];
-      const dz = pz - position[2];
-      const dist = Math.hypot(dx, dz);
+      tickRef.current = (tickRef.current + 1) % 4;
+      if (tickRef.current === 0) {
+        const [px, , pz] = useConcertStore.getState().playerPosition;
+        const dx = px - position[0];
+        const dz = pz - position[2];
+        const dist = Math.hypot(dx, dz);
 
-      if (dist < 4.5) {
-        const targetYaw = Math.atan2(dx, dz);
-        groupRef.current.rotation.y +=
-          (targetYaw - groupRef.current.rotation.y) * Math.min(1, delta * 6.5);
-        const shouldAlert = dist < 3.2;
-        if (shouldAlert !== securityAlert) {
-          setSecurityAlert(shouldAlert);
-        }
-      } else {
-        groupRef.current.rotation.y +=
-          (baseRotation - groupRef.current.rotation.y) * Math.min(1, delta * 4.0);
-        if (securityAlert) {
-          setSecurityAlert(false);
+        if (dist < 4.5) {
+          targetYawRef.current = Math.atan2(dx, dz);
+          const shouldAlert = dist < 3.2;
+          if (shouldAlert !== securityAlert) {
+            setSecurityAlert(shouldAlert);
+          }
+        } else {
+          targetYawRef.current = baseRotation;
+          if (securityAlert) {
+            setSecurityAlert(false);
+          }
         }
       }
+
+      groupRef.current.rotation.y +=
+        (targetYawRef.current - groupRef.current.rotation.y) * Math.min(1, delta * 5.0);
     }
   });
 

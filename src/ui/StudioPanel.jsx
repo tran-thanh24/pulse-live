@@ -216,12 +216,22 @@ export function StudioPanel() {
             </div>
           </div>
         </div>
-        <button
-          onClick={() => setStudioMode(false)}
-          className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-[#A1A1AA] hover:text-white transition cursor-pointer"
-        >
-          <X className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => useConcertStore.getState().setDevMode(!useConcertStore.getState().devMode)}
+            className="px-2 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-[10px] font-heading font-bold text-cyan-300 transition cursor-pointer flex items-center gap-1"
+            title="Toggle Performance Diagnostics HUD"
+          >
+            <Activity className="w-3 h-3 text-cyan-400" />
+            <span>PERF</span>
+          </button>
+          <button
+            onClick={() => setStudioMode(false)}
+            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-[#A1A1AA] hover:text-white transition cursor-pointer"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Studio Navigation Tabs */}
