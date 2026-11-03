@@ -620,9 +620,9 @@ export function StudioPanel() {
                 {[
                   { id: 'solo', label: '1 Solo' },
                   { id: 'duo', label: '2 Duo' },
-                  { id: 'group', label: '4 Group' },
-                  { id: 'ensemble12', label: '12 Unit' },
-                  { id: 'mega24', label: '24 Mega' }
+                  { id: 'group', label: '5 CORTIS' },
+                  { id: 'ensemble10', label: '10 Unit' },
+                  { id: 'mega20', label: '20 Mega' }
                 ].map((c) => (
                   <button
                     key={c.id}

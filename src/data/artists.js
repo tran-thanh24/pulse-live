@@ -1,117 +1,220 @@
 /**
- * Configurable Artist Roster for PULSE//LIVE 2026
- * Supports solo (1), duo (2), group (4), or full cast (12 / 24) dynamically via concert config.
+ * Configurable Artist Roster for PULSE//LIVE 2026 — CORTIS
+ * Official 5-Member Formation:
+ * 1. MARTIN (Leader, Producer, Lead Vocal)
+ * 2. JAMES (Main Dancer, Vocal)
+ * 3. JUHOON (Main Vocal)
+ * 4. SEONGHYEON (Rapper, Producer)
+ * 5. KEONHO (Vocal, Maknae)
  */
+
 export const ARTIST_CAST_PRESETS = {
   solo: 1,
   duo: 2,
-  group: 4,
-  fullCast12: 12,
-  fullCast24: 24
+  cortis5: 5,
+  group: 5,
+  ensemble10: 10,
+  mega20: 20
 };
 
-const BASE_PERFORMERS = [
+export const CORTIS_MEMBERS = [
   {
-    artistId: 'vortex',
-    displayName: 'KAI // VORTEX',
-    role: 'Lead Vocal & Synth Architect',
+    artistId: 'cortis_martin',
+    name: 'Martin',
+    displayName: 'MARTIN',
+    koreanName: '마틴',
+    role: 'Leader · Producer · Lead Vocal',
+    badge: 'LEADER',
     model: 'stylized-performer',
     stagePosition: [0, 1.4, -18.5],
-    runwayPosition: [0, 1.22, -10.2],
+    runwayPosition: [0, 1.22, -8.0],
+    bStagePosition: [0, 1.1, 6.4],
     avatar: {
-      skinTone: '#F5CBA7',
-      hairColor: '#22D3EE',
+      gender: 'male',
+      facePreset: 'male-sharp',
+      skinTone: '#FDE7D6',
+      hairStyle: 'curtain-flow',
+      hairColor: '#E2E8F0', // Platinum Silver
+      outfitTop: 'tailored-blazer',
+      outfitBottom: 'tailored-trousers',
+      shoes: 'combat-boots',
       outfitColor: '#0F172A',
-      accentColor: '#22D3EE'
+      accentColor: '#22D3EE',
+      accessory: 'iem-earpiece',
+      scalePreset: 'TALL'
     },
     animations: ['IDLE', 'WALK', 'SING', 'DANCE_A', 'DANCE_B', 'WAVE', 'TALK', 'RUNWAY', 'FINAL_POSE'],
     defaultAnimation: 'SING'
   },
   {
-    artistId: 'echo',
-    displayName: 'SORA // ECHO',
-    role: 'Main Vocal & High-Frequency Lead',
+    artistId: 'cortis_james',
+    name: 'James',
+    displayName: 'JAMES',
+    koreanName: '제임스',
+    role: 'Main Dancer · Vocal',
+    badge: 'DANCE',
     model: 'stylized-performer',
-    stagePosition: [-3.2, 1.4, -19.5],
-    runwayPosition: [-1.4, 1.22, -12.0],
+    stagePosition: [-2.2, 1.4, -19.4],
+    runwayPosition: [-1.0, 1.22, -9.6],
+    bStagePosition: [-1.0, 1.1, 5.8],
     avatar: {
-      skinTone: '#FDE7D6',
-      hairColor: '#EC4899',
-      outfitColor: '#1E1B4B',
-      accentColor: '#EC4899'
+      gender: 'male',
+      facePreset: 'male-sharp',
+      skinTone: '#F5CBA7',
+      hairStyle: 'undercut-fade',
+      hairColor: '#FACC15', // Warm Golden Blonde
+      outfitTop: 'neon-accent-harness-vest',
+      outfitBottom: 'cargo-joggers',
+      shoes: 'chunky-cyber-sneakers',
+      outfitColor: '#18181B',
+      accentColor: '#FACC15',
+      accessory: 'iem-earpiece',
+      scalePreset: 'MEDIUM'
     },
     animations: ['IDLE', 'WALK', 'SING', 'DANCE_A', 'DANCE_B', 'WAVE', 'TALK', 'RUNWAY', 'FINAL_POSE'],
     defaultAnimation: 'DANCE_A'
   },
   {
-    artistId: 'kilo',
-    displayName: 'RAY // KILO',
-    role: 'Sub-Bass & Live Percussion',
+    artistId: 'cortis_juhoon',
+    name: 'Juhoon',
+    displayName: 'JUHOON',
+    koreanName: '주훈',
+    role: 'Main Vocal',
+    badge: 'VOCAL',
     model: 'stylized-performer',
-    stagePosition: [3.2, 1.4, -19.5],
-    runwayPosition: [1.4, 1.22, -12.0],
+    stagePosition: [2.2, 1.4, -19.4],
+    runwayPosition: [1.0, 1.22, -9.6],
+    bStagePosition: [1.0, 1.1, 5.8],
     avatar: {
+      gender: 'male',
+      facePreset: 'male-sharp',
+      skinTone: '#FDE7D6',
+      hairStyle: 'slick-back',
+      hairColor: '#38BDF8', // Electric Sky Blue
+      outfitTop: 'cyber-bomber-jacket',
+      outfitBottom: 'tailored-trousers',
+      shoes: 'combat-boots',
+      outfitColor: '#1E1B4B',
+      accentColor: '#38BDF8',
+      accessory: 'iem-earpiece',
+      scalePreset: 'MEDIUM'
+    },
+    animations: ['IDLE', 'WALK', 'SING', 'DANCE_A', 'DANCE_B', 'WAVE', 'TALK', 'RUNWAY', 'FINAL_POSE'],
+    defaultAnimation: 'SING'
+  },
+  {
+    artistId: 'cortis_seonghyeon',
+    name: 'Seonghyeon',
+    displayName: 'SEONGHYEON',
+    koreanName: '성현',
+    role: 'Rapper · Producer',
+    badge: 'RAPPER',
+    model: 'stylized-performer',
+    stagePosition: [-4.0, 1.4, -20.5],
+    runwayPosition: [-1.0, 1.22, -11.2],
+    bStagePosition: [-0.7, 1.1, 5.0],
+    avatar: {
+      gender: 'male',
+      facePreset: 'male-sharp',
       skinTone: '#E0AC69',
-      hairColor: '#FACC15',
-      outfitColor: '#18181B',
-      accentColor: '#FACC15'
+      hairStyle: 'wolf-cut',
+      hairColor: '#EC4899', // Cyber Magenta Flare
+      outfitTop: 'tactical-vest',
+      outfitBottom: 'distressed-denim',
+      shoes: 'chunky-cyber-sneakers',
+      outfitColor: '#09090B',
+      accentColor: '#EC4899',
+      accessory: 'iem-earpiece',
+      scalePreset: 'MEDIUM'
     },
     animations: ['IDLE', 'WALK', 'SING', 'DANCE_A', 'DANCE_B', 'WAVE', 'TALK', 'RUNWAY', 'FINAL_POSE'],
     defaultAnimation: 'DANCE_B'
   },
   {
-    artistId: 'zenith',
-    displayName: 'NOAH // ZENITH',
-    role: 'Modular Controller & Visual Sync',
+    artistId: 'cortis_keonho',
+    name: 'Keonho',
+    displayName: 'KEONHO',
+    koreanName: '건호',
+    role: 'Vocal · Maknae',
+    badge: 'MAKNAE',
     model: 'stylized-performer',
-    stagePosition: [0, 2.3, -24.5],
-    runwayPosition: [0, 1.4, -17.0],
+    stagePosition: [4.0, 1.4, -20.5],
+    runwayPosition: [1.0, 1.22, -11.2],
+    bStagePosition: [0.7, 1.1, 5.0],
     avatar: {
-      skinTone: '#C68642',
-      hairColor: '#E2E8F0',
-      outfitColor: '#311042',
-      accentColor: '#8B5CF6'
+      gender: 'male',
+      facePreset: 'male-sharp',
+      skinTone: '#FDE7D6',
+      hairStyle: 'cyber-crop',
+      hairColor: '#A855F7', // Soft Lavender Violet
+      outfitTop: 'oversized-cyber-hoodie',
+      outfitBottom: 'cargo-joggers',
+      shoes: 'chunky-cyber-sneakers',
+      outfitColor: '#2E1065',
+      accentColor: '#A855F7',
+      accessory: 'iem-earpiece',
+      scalePreset: 'MEDIUM'
     },
     animations: ['IDLE', 'WALK', 'SING', 'DANCE_A', 'DANCE_B', 'WAVE', 'TALK', 'RUNWAY', 'FINAL_POSE'],
-    defaultAnimation: 'IDLE'
+    defaultAnimation: 'DANCE_A'
   }
 ];
 
+export const BASE_PERFORMERS = CORTIS_MEMBERS;
+
 /**
- * Generates an arbitrary cast size (1, 2, 4, 12, 24) with non-overlapping stage formations
+ * Generates an artist roster (1 Solo, 2 Duo, 5 CORTIS group, or expanded with backing dancers)
  */
 export function getArtistRoster(castMode = 'group') {
   const count =
     typeof castMode === 'number'
       ? castMode
-      : ARTIST_CAST_PRESETS[castMode] || 4;
+      : ARTIST_CAST_PRESETS[castMode] || 5;
 
-  if (count <= 4) {
-    return BASE_PERFORMERS.slice(0, count);
+  if (count <= 5) {
+    return CORTIS_MEMBERS.slice(0, count);
   }
 
-  const expanded = [];
+  // Expanded with backing dancers behind CORTIS
+  const expanded = [...CORTIS_MEMBERS];
   const palette = ['#22D3EE', '#8B5CF6', '#EC4899', '#FACC15'];
-  for (let i = 0; i < count; i++) {
-    const base = BASE_PERFORMERS[i % BASE_PERFORMERS.length];
-    const row = Math.floor(i / 6);
+  const extraCount = count - 5;
+
+  for (let i = 0; i < extraCount; i++) {
+    const row = Math.floor(i / 6) + 1;
     const col = i % 6;
     const xSpread = (col - 2.5) * 3.4;
-    const zSpread = -18.5 - row * 2.2;
+    const zSpread = -21.5 - row * 2.2;
 
     expanded.push({
-      ...base,
-      artistId: `${base.artistId}_${i + 1}`,
-      displayName: i < 4 ? base.displayName : `UNIT // ${String(i + 1).padStart(2, '0')}`,
+      artistId: `cortis_dancer_${i + 1}`,
+      displayName: `DANCER // ${String(i + 1).padStart(2, '0')}`,
+      badge: 'DANCER',
+      role: 'Stage Performer & Backing Dancer',
+      model: 'stylized-performer',
       stagePosition: [xSpread, 1.4, zSpread],
-      runwayPosition: [(col - 2.5) * 1.1, 1.22, -10.5 - row * 1.8],
+      runwayPosition: [(col - 2.5) * 1.1, 1.22, -13.5 - row * 1.8],
+      bStagePosition: [(col - 2.5) * 0.6, 1.1, 4.2],
       avatar: {
-        ...base.avatar,
-        accentColor: palette[i % palette.length]
-      }
+        gender: i % 2 === 0 ? 'male' : 'female',
+        facePreset: i % 2 === 0 ? 'male-sharp' : 'female-idol',
+        skinTone: '#FDE7D6',
+        hairStyle: i % 2 === 0 ? 'cyber-crop' : 'high-ponytail',
+        hairColor: '#3F3F46',
+        outfitTop: 'tactical-vest',
+        outfitBottom: 'cargo-joggers',
+        shoes: 'combat-boots',
+        outfitColor: '#18181B',
+        accentColor: palette[i % palette.length],
+        accessory: 'iem-earpiece',
+        scalePreset: 'MEDIUM'
+      },
+      animations: ['IDLE', 'WALK', 'SING', 'DANCE_A', 'DANCE_B', 'WAVE', 'TALK', 'RUNWAY', 'FINAL_POSE'],
+      defaultAnimation: 'DANCE_A'
     });
   }
+
   return expanded;
 }
 
-export const ARTISTS = BASE_PERFORMERS;
+export const ARTISTS = CORTIS_MEMBERS;

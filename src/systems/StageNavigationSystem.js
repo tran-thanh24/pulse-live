@@ -47,8 +47,8 @@ class StageNavigationSystem {
     const activeZone =
       animationState === 'RUNWAY' ? 'RUNWAY' : this.currentTargetZone;
 
-    // Only Lead/Center performers (first 4) travel down Runway or to B-Stage; backing ensemble holds Main Stage formation
-    if (artistIndex >= 4 && (activeZone === 'RUNWAY' || activeZone === 'B_STAGE')) {
+    // Only Lead/Center performers (first 5 CORTIS members) travel down Runway or to B-Stage; backing ensemble holds Main Stage formation
+    if (artistIndex >= 5 && (activeZone === 'RUNWAY' || activeZone === 'B_STAGE')) {
       return this.clampToStageBoundary(baseStagePos, 'MAIN_STAGE');
     }
 
@@ -57,15 +57,15 @@ class StageNavigationSystem {
 
     switch (activeZone) {
       case 'RUNWAY': {
-        const pos = [
-          baseRunwayPos[0] || spreadX * 0.75,
+        const pos = artist.runwayPosition || [
+          spreadX * 0.75,
           STAGE_CONFIG.RUNWAY.height,
-          (baseRunwayPos[2] || -8.5) + spreadZ * 0.6
+          -8.5 + spreadZ * 0.6
         ];
         return this.clampToStageBoundary(pos, 'RUNWAY');
       }
       case 'B_STAGE': {
-        const pos = [
+        const pos = artist.bStagePosition || [
           spreadX * 0.85,
           STAGE_CONFIG.B_STAGE.height,
           STAGE_CONFIG.B_STAGE.position[2] + spreadZ * 0.5

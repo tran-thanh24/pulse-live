@@ -19,17 +19,17 @@ export function ArtistCharacter({
   const characterConfig = {
     id: artist.artistId,
     role: artist.role?.includes('DANCER') ? 'DANCER' : 'ARTIST',
-    gender: artistIndex % 2 === 1 ? 'female' : 'male',
+    gender: artist.avatar?.gender || 'male',
     displayName: artist.displayName,
-    scalePreset: artistIndex === 0 ? 'TALL' : 'MEDIUM',
-    skinTone: artist.avatar?.skinTone || '#F5CBA7',
-    facePreset: artistIndex % 2 === 1 ? 'female-idol' : 'male-sharp',
-    hairStyle: artist.avatar?.hairStyle || (artistIndex % 2 === 1 ? 'high-ponytail' : 'cyber-crop'),
+    scalePreset: artist.avatar?.scalePreset || (artistIndex === 0 ? 'TALL' : 'MEDIUM'),
+    skinTone: artist.avatar?.skinTone || '#FDE7D6',
+    facePreset: artist.avatar?.facePreset || 'male-sharp',
+    hairStyle: artist.avatar?.hairStyle || 'cyber-crop',
     hairColor: artist.avatar?.hairColor || '#22D3EE',
-    outfitTop: artistIndex % 2 === 1 ? 'corset-stage-top' : 'tailored-blazer',
-    outfitBottom: artistIndex % 2 === 1 ? 'pleated-stage-skirt' : 'tailored-trousers',
-    shoes: artistIndex % 2 === 1 ? 'platform-idol-boots' : 'combat-boots',
-    outfitColor: artist.avatar?.outfitColor || '#8B5CF6',
+    outfitTop: artist.avatar?.outfitTop || 'tailored-blazer',
+    outfitBottom: artist.avatar?.outfitBottom || 'tailored-trousers',
+    shoes: artist.avatar?.shoes || 'combat-boots',
+    outfitColor: artist.avatar?.outfitColor || '#0F172A',
     accessory: artist.avatar?.accessory || 'iem-earpiece',
     lightstick: '#FACC15'
   };
@@ -71,7 +71,7 @@ export function ArtistCharacter({
         animationState={animationState}
         lightstickMode="OFF"
         showLabel={showLabel}
-        labelBadge={artistIndex === 0 ? 'HEADLINER' : null}
+        labelBadge={artist.badge || (artistIndex === 0 ? 'LEADER' : null)}
         phaseOffset={artistIndex * 0.45}
       />
     </group>
