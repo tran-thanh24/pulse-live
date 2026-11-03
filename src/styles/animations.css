@@ -1,0 +1,111 @@
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(320%);
+    opacity: 0;
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+@keyframes reactionFloat {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(-20px) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-140px) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes laserSweepLeft {
+  0%, 100% {
+    transform: rotate(-28deg) scaleY(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: rotate(18deg) scaleY(1.1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes laserSweepRight {
+  0%, 100% {
+    transform: rotate(28deg) scaleY(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: rotate(-18deg) scaleY(1.1);
+    opacity: 0.85;
+  }
+}
+
+.animate-scanline {
+  animation: scanline 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulseRing 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+.animate-reaction-float {
+  animation: reactionFloat 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-laser-left {
+  animation: laserSweepLeft 5s ease-in-out infinite;
+}
+
+.animate-laser-right {
+  animation: laserSweepRight 6s ease-in-out infinite;
+}
+
