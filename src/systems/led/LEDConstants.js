@@ -150,3 +150,4 @@ export const SOURCE_CAPABILITIES = {
     badge: 'LIVE BROADCAST'
   }
 };
+

@@ -36,26 +36,31 @@ export const PROJECT_VIDEOS = [
 export const YOUTUBE_PRESETS = [
   {
     id: 'cortis-what-you-want',
-    label: "CORTIS — 'What You Want'",
+    trackId: 'what_you_want',
+    label: "Track 1: What You Want (Official MV)",
     url: 'https://youtu.be/e2OpbOv_JiQ',
     videoId: 'e2OpbOv_JiQ'
   },
   {
     id: 'cortis-acai',
-    label: "CORTIS — 'ACAI'",
+    trackId: 'acai',
+    label: "Track 2: ACAI (Official MV)",
     url: 'https://youtu.be/nCElUD0jvgo',
     videoId: 'nCElUD0jvgo'
   },
   {
     id: 'cortis-joyride',
-    label: "CORTIS — 'JoyRide'",
+    trackId: 'joyride',
+    label: "Track 3: JoyRide (Official MV)",
     url: 'https://youtu.be/8QZeXvOjgGE',
     videoId: '8QZeXvOjgGE'
   },
   {
     id: 'cortis-moneymoneymoney',
-    label: "CORTIS — 'MONEYMONEYMONEY'",
+    trackId: 'moneymoneymoney',
+    label: "Track 4: MONEYMONEYMONEY (Official Visualizer)",
     url: 'https://youtu.be/OhdvNHmJDsw',
     videoId: 'OhdvNHmJDsw'
   }
 ];
+

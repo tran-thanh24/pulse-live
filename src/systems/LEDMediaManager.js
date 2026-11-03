@@ -93,6 +93,17 @@ class LEDMediaManager {
     eventBus.on('timeline:cue', (cue) => {
       this.handleTimelineCue(cue);
     });
+
+    // 3. Auto-load matched YouTube MV/Visualizer when a Track changes
+    eventBus.on('music:trackLoaded', ({ track }) => {
+      if (track?.youtubeVideoId) {
+        const mainCh = this.getChannel('MAIN_LED');
+        mainCh.setSource(LED_MEDIA_TYPES.YOUTUBE, track.youtubeVideoId, {
+          loop: true,
+          autoPlay: musicEngine.isPlaying()
+        });
+      }
+    });
   }
 
   handleTimelineCue(cue) {

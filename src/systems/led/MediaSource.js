@@ -81,3 +81,4 @@ export class MediaSource {
     this.listeners.clear();
   }
 }
+

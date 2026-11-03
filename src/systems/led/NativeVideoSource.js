@@ -256,3 +256,4 @@ export class NativeVideoSource extends MediaSource {
     this.destroyVideo();
   }
 }
+

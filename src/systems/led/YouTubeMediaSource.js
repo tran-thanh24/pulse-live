@@ -330,3 +330,4 @@ export class YouTubeMediaSource extends MediaSource {
     this.containerEl = null;
   }
 }
+

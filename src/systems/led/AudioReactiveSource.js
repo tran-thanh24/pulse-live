@@ -51,3 +51,4 @@ export class AudioReactiveSource extends MediaSource {
     this.canvas = null;
   }
 }
+

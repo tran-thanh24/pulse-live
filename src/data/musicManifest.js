@@ -1,17 +1,18 @@
 /**
  * Music Manifest for PULSE//LIVE 2026 — CITY OF SOUND
- * Each track defines its metadata, BPM, offset, LED visual preset, theme, and JSON timeline path.
- * Includes `ledVideo` cues and `artistMove` stage navigation cues (`MAIN_STAGE`, `RUNWAY`, `B_STAGE`).
+ * Each track defines its metadata, BPM, offset, matched YouTube MV/Visualizer,
+ * LED visual preset, theme, and JSON timeline path.
  */
 export const DEFAULT_TIMELINES = {
-  '/timelines/afterglow.json': [
+  '/timelines/what-you-want.json': [
     { time: 0, type: 'scene', value: 'blackout' },
     {
-      time: 0.2,
-      type: 'ledVideo',
+      time: 0.1,
+      type: 'LED_SOURCE',
       target: 'MAIN_LED',
-      src: '/video/afterglow_intro.mp4',
-      loop: false
+      sourceType: 'YOUTUBE',
+      source: 'e2OpbOv_JiQ',
+      loop: true
     },
     { time: 1.5, type: 'led', value: 'COUNTDOWN' },
     { time: 4.5, type: 'led', value: 'pulse-core-intro' },
@@ -23,7 +24,6 @@ export const DEFAULT_TIMELINES = {
     { time: 14.0, type: 'scene', value: 'VERSE' },
     { time: 14.0, type: 'camera', value: 'ARTIST_CLOSE' },
     { time: 14.5, type: 'artist', value: 'SING' },
-    { time: 15.0, type: 'led', value: 'AUDIO_REACTIVE' },
     { time: 24.0, type: 'EnergyCallout', value: 'MAKE SOME NOISE' },
     { time: 25.0, type: 'camera', value: 'CRANE' },
     { time: 31.2, type: 'crowd', value: 'wave' },
@@ -39,16 +39,8 @@ export const DEFAULT_TIMELINES = {
     { time: 62.0, type: 'camera', value: 'CROWD' },
     { time: 65.0, type: 'artistMove', target: 'B_STAGE', duration: 4.5 },
     { time: 66.0, type: 'camera', value: 'B_STAGE' },
-    { time: 75.0, type: 'led', value: 'PULSE_PATTERN' },
     { time: 76.0, type: 'EnergyCallout', value: 'MAKE SOME NOISE' },
     { time: 84.0, type: 'artistMove', target: 'MAIN_STAGE', duration: 4.5 },
-    {
-      time: 91.0,
-      type: 'ledVideo',
-      target: 'MAIN_LED',
-      src: '/video/pulse_drop_tunnel.mp4',
-      loop: true
-    },
     { time: 91.4, type: 'drop', value: 'DROP' },
     { time: 91.4, type: 'co2', value: 'burst' },
     { time: 91.4, type: 'artist', value: 'DANCE_B' },
@@ -59,9 +51,16 @@ export const DEFAULT_TIMELINES = {
     { time: 112.0, type: 'confetti', value: 'burst' },
     { time: 115.0, type: 'artist', value: 'FINAL_POSE' }
   ],
-  '/timelines/frequency-zero.json': [
+  '/timelines/acai.json': [
     { time: 0, type: 'scene', value: 'INTRO' },
-    { time: 0.5, type: 'led', value: 'SHADER' },
+    {
+      time: 0.1,
+      type: 'LED_SOURCE',
+      target: 'MAIN_LED',
+      sourceType: 'YOUTUBE',
+      source: 'nCElUD0jvgo',
+      loop: true
+    },
     { time: 2.0, type: 'camera', value: 'ORBIT' },
     { time: 8.0, type: 'artist', value: 'DANCE_A' },
     { time: 8.0, type: 'artistMove', target: 'MAIN_STAGE', duration: 3.0 },
@@ -81,16 +80,45 @@ export const DEFAULT_TIMELINES = {
     { time: 70.0, type: 'firework', value: 'burst' },
     { time: 75.0, type: 'camera', value: 'DRONE' }
   ],
-  '/timelines/golden-echo.json': [
-    { time: 0, type: 'scene', value: 'BALLAD' },
+  '/timelines/joyride.json': [
+    { time: 0, type: 'scene', value: 'INTRO' },
     {
-      time: 0.5,
-      type: 'ledVideo',
+      time: 0.1,
+      type: 'LED_SOURCE',
       target: 'MAIN_LED',
-      src: '/video/encore_gold_horizon.mp4',
+      sourceType: 'YOUTUBE',
+      source: '8QZeXvOjgGE',
       loop: true
     },
-    { time: 1.0, type: 'led', value: 'LYRIC_STYLE' },
+    { time: 2.0, type: 'camera', value: 'ORBIT' },
+    { time: 8.0, type: 'artist', value: 'DANCE_A' },
+    { time: 8.0, type: 'artistMove', target: 'MAIN_STAGE', duration: 3.0 },
+    { time: 12.0, type: 'laser', value: 'on' },
+    { time: 18.0, type: 'scene', value: 'CHORUS' },
+    { time: 18.5, type: 'camera', value: 'SIDE_STAGE' },
+    { time: 22.0, type: 'artistMove', target: 'RUNWAY', duration: 3.8 },
+    { time: 25.0, type: 'pulseWave', value: 'SPIRAL' },
+    { time: 34.0, type: 'drop', value: 'DROP' },
+    { time: 34.0, type: 'co2', value: 'burst' },
+    { time: 34.5, type: 'camera', value: 'WIDE_STAGE' },
+    { time: 50.0, type: 'EnergyCallout', value: 'MAKE SOME NOISE' },
+    { time: 51.0, type: 'artistMove', target: 'B_STAGE', duration: 4.0 },
+    { time: 52.0, type: 'camera', value: 'B_STAGE' },
+    { time: 68.0, type: 'scene', value: 'ENCORE' },
+    { time: 68.5, type: 'artistMove', target: 'MAIN_STAGE', duration: 4.0 },
+    { time: 70.0, type: 'firework', value: 'burst' },
+    { time: 75.0, type: 'camera', value: 'DRONE' }
+  ],
+  '/timelines/moneymoneymoney.json': [
+    { time: 0, type: 'scene', value: 'BALLAD' },
+    {
+      time: 0.1,
+      type: 'LED_SOURCE',
+      target: 'MAIN_LED',
+      sourceType: 'YOUTUBE',
+      source: 'OhdvNHmJDsw',
+      loop: true
+    },
     { time: 2.0, type: 'camera', value: 'ARTIST_CLOSE' },
     { time: 6.0, type: 'artist', value: 'SING' },
     { time: 16.0, type: 'artistMove', target: 'RUNWAY', duration: 4.0 },
@@ -105,17 +133,25 @@ export const DEFAULT_TIMELINES = {
   ]
 };
 
+// Backwards compatibility aliases for older references
+DEFAULT_TIMELINES['/timelines/afterglow.json'] = DEFAULT_TIMELINES['/timelines/what-you-want.json'];
+DEFAULT_TIMELINES['/timelines/frequency-zero.json'] = DEFAULT_TIMELINES['/timelines/acai.json'];
+DEFAULT_TIMELINES['/timelines/golden-echo.json'] = DEFAULT_TIMELINES['/timelines/moneymoneymoney.json'];
+
 export const MUSIC_MANIFEST = [
   {
     id: 'what_you_want',
     title: 'What You Want',
     artist: 'CORTIS',
     audio: '/audio/what-you-want.m4a',
+    youtubeVideoId: 'e2OpbOv_JiQ',
+    youtubeUrl: 'https://youtu.be/e2OpbOv_JiQ',
+    youtubeTitle: "CORTIS — 'What You Want' (Official MV)",
     cover: 'linear-gradient(135deg, #22D3EE 0%, #8B5CF6 50%, #EC4899 100%)',
     duration: 199,
     bpm: 124,
     offset: 0,
-    timeline: '/timelines/afterglow.json',
+    timeline: '/timelines/what-you-want.json',
     ledVisual: 'AUDIO_REACTIVE',
     theme: {
       primary: '#22D3EE',
@@ -133,11 +169,14 @@ export const MUSIC_MANIFEST = [
     title: 'ACAI',
     artist: 'CORTIS',
     audio: '/audio/acai.m4a',
+    youtubeVideoId: 'nCElUD0jvgo',
+    youtubeUrl: 'https://youtu.be/nCElUD0jvgo',
+    youtubeTitle: "CORTIS — 'ACAI' (Official MV)",
     cover: 'linear-gradient(135deg, #EC4899 0%, #8B5CF6 60%, #06B6D4 100%)',
     duration: 190,
     bpm: 128,
     offset: 0,
-    timeline: '/timelines/frequency-zero.json',
+    timeline: '/timelines/acai.json',
     ledVisual: 'PULSE_PATTERN',
     theme: {
       primary: '#EC4899',
@@ -155,11 +194,14 @@ export const MUSIC_MANIFEST = [
     title: 'JoyRide',
     artist: 'CORTIS',
     audio: '/audio/joyride.m4a',
+    youtubeVideoId: '8QZeXvOjgGE',
+    youtubeUrl: 'https://youtu.be/8QZeXvOjgGE',
+    youtubeTitle: "CORTIS — 'JoyRide' (Official MV)",
     cover: 'linear-gradient(135deg, #8B5CF6 0%, #22D3EE 60%, #FACC15 100%)',
     duration: 171,
     bpm: 130,
     offset: 0,
-    timeline: '/timelines/frequency-zero.json',
+    timeline: '/timelines/joyride.json',
     ledVisual: 'SHADER',
     theme: {
       primary: '#8B5CF6',
@@ -177,11 +219,14 @@ export const MUSIC_MANIFEST = [
     title: 'MONEYMONEYMONEY',
     artist: 'CORTIS',
     audio: '/audio/moneymoneymoney.m4a',
+    youtubeVideoId: 'OhdvNHmJDsw',
+    youtubeUrl: 'https://youtu.be/OhdvNHmJDsw',
+    youtubeTitle: "CORTIS — 'MONEYMONEYMONEY' (Official Visualizer)",
     cover: 'linear-gradient(135deg, #FACC15 0%, #F59E0B 50%, #FFFFFF 100%)',
     duration: 138,
     bpm: 135,
     offset: 0,
-    timeline: '/timelines/golden-echo.json',
+    timeline: '/timelines/moneymoneymoney.json',
     ledVisual: 'LYRIC_STYLE',
     theme: {
       primary: '#FACC15',
