@@ -95,14 +95,13 @@ class LEDMediaManager {
       this.handleTimelineCue(cue);
     });
 
-    // 3. Auto-load matched YouTube MV/Visualizer when a Track changes
+    // 3. Audio-Reactive Stage Sync when a Track changes (Cinema HUD Mode)
     eventBus.on('music:trackLoaded', ({ track }) => {
-      if (track?.youtubeVideoId) {
-        const mainCh = this.getChannel('MAIN_LED');
-        mainCh.setSource(LED_MEDIA_TYPES.YOUTUBE, track.youtubeVideoId, {
-          loop: true,
-          autoPlay: true
-        });
+      // In Cinema HUD Mode, all stage LED screens remain on native 3D Audio-Reactive visualizers,
+      // while the official MV is played cleanly via the CinemaPiPHUD window!
+      const mainCh = this.getChannel('MAIN_LED');
+      if (mainCh && mainCh.sourceType !== LED_MEDIA_TYPES.AUDIO_REACTIVE) {
+        mainCh.setSource(LED_MEDIA_TYPES.AUDIO_REACTIVE, 'AUDIO_REACTIVE');
       }
     });
 

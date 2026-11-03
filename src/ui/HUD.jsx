@@ -13,6 +13,7 @@ import { useConcertStore } from '../store/concertStore';
 import { useUserStore } from '../store/userStore';
 import { MiniMap } from './MiniMap';
 import { InteractionPrompt } from './InteractionPrompt';
+import { CinemaMVPiP } from './CinemaMVPiP';
 import { achievementSystem } from '../systems/AchievementSystem';
 import { audienceEnergySystem } from '../systems/AudienceEnergySystem';
 import { audioManager } from '../core/AudioManager';
@@ -51,6 +52,8 @@ export function HUD() {
   const audienceEnergyState = useConcertStore((s) => s.audienceEnergyState);
   const showState = useConcertStore((s) => s.showState);
   const preShowCountdown = useConcertStore((s) => s.preShowCountdown);
+  const cinemaMvOpen = useConcertStore((s) => s.cinemaMvOpen);
+  const setCinemaMvOpen = useConcertStore((s) => s.setCinemaMvOpen);
 
   const settings = useUserStore((s) => s.settings);
   const ticket = useUserStore((s) => s.ticket);
@@ -195,6 +198,22 @@ export function HUD() {
 
           {/* Discreet Operator / Camera / Photo pills */}
           <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => {
+                audioManager.playUISound('click');
+                setCinemaMvOpen(!cinemaMvOpen);
+              }}
+              className={`glass-pill px-2.5 py-1 text-[10px] font-heading font-bold flex items-center gap-1.5 transition cursor-pointer ${
+                cinemaMvOpen
+                  ? 'bg-[#EC4899]/20 text-[#EC4899] border-[#EC4899]/60 shadow-[0_0_15px_rgba(236,72,153,0.35)]'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+              title="Toggle Cinema MV Picture-in-Picture [V]"
+            >
+              <Video className="w-3 h-3 text-[#EC4899]" />
+              <span>MV [V]: {cinemaMvOpen ? 'ON' : 'OFF'}</span>
+            </button>
+
             <button
               onClick={() => {
                 audioManager.playUISound('click');
@@ -360,6 +379,9 @@ export function HUD() {
           </div>
         </div>
       )}
+
+      {/* Floating Picture-in-Picture Cinema MV */}
+      <CinemaMVPiP />
     </div>
   );
 }

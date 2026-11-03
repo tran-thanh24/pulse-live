@@ -220,8 +220,8 @@ export function LEDVideoPlayer({
         )}
       </mesh>
 
-      {/* 3. YOUTUBE 3D PRESENTATION (Drei HTML 3D Layer with Exact Perspective Alignment) */}
-      {isYouTube && (
+      {/* 3. YOUTUBE 3D PRESENTATION — Only active in Studio Inspection Mode so normal concert stage is 100% clean 3D WebGL */}
+      {isYouTube && studioMode && (
         <Html
           transform
           position={[0, 0, 0.04]}

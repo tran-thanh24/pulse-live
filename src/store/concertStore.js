@@ -106,6 +106,9 @@ export const useConcertStore = create((set, get) => ({
   // Active modal: null | 'merch' | 'photo' | 'schedule' | 'settings' | 'venue-info'
   activeModal: null,
 
+  // Cinema MV Picture-in-Picture state
+  cinemaMvOpen: true,
+
   // Reactions & Moments
   reactions: [],
   lastReactionTime: 0,
@@ -272,6 +275,8 @@ export const useConcertStore = create((set, get) => ({
       });
     }
   },
+
+  setCinemaMvOpen: (cinemaMvOpen) => set({ cinemaMvOpen }),
 
   triggerReaction: (type, emoji, label) => {
     const now = Date.now();
