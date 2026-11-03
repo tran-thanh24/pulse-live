@@ -12,6 +12,58 @@ import { realtimeService } from '../../services/realtime';
 import { CrowdCharacter } from './CrowdCharacter';
 import { CharacterFactory } from '../CharacterFactory';
 
+function RemotePeerCharacter({ peer }) {
+  const groupRef = useRef();
+  const targetPos = useRef(
+    new THREE.Vector3(peer.position?.[0] || 0, peer.position?.[1] || 0, peer.position?.[2] || 0)
+  );
+  const [animState, setAnimState] = useState('LIGHTSTICK_IDLE');
+
+  useEffect(() => {
+    if (peer.position) {
+      const prevX = targetPos.current.x;
+      const prevZ = targetPos.current.z;
+      const newX = peer.position[0];
+      const newZ = peer.position[2];
+      const dist = Math.hypot(newX - prevX, newZ - prevZ);
+      targetPos.current.set(peer.position[0], peer.position[1] || 0, peer.position[2]);
+      if (dist > 0.08) {
+        setAnimState('WALK');
+        const timer = setTimeout(() => setAnimState('LIGHTSTICK_IDLE'), 450);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [peer.position]);
+
+  useFrame((_, delta) => {
+    if (groupRef.current) {
+      groupRef.current.position.lerp(targetPos.current, Math.min(1, delta * 14));
+      if (typeof peer.rotation === 'number') {
+        groupRef.current.rotation.y = THREE.MathUtils.lerp(
+          groupRef.current.rotation.y,
+          peer.rotation,
+          Math.min(1, delta * 12)
+        );
+      }
+    }
+  });
+
+  return (
+    <group ref={groupRef} position={peer.position || [0, 0, 0]}>
+      <CharacterFactory
+        config={{
+          ...(peer.avatar || {}),
+          role: 'PLAYER',
+          displayName: peer.displayName || 'PULSE FAN'
+        }}
+        animationState={animState}
+        lightstickMode={peer.lightstickMode || 'SYNC'}
+        showLabel
+      />
+    </group>
+  );
+}
+
 /**
  * CrowdManager (`src/characters/npc/CrowdManager.jsx`)
  * Renders:
@@ -282,23 +334,7 @@ export function CrowdManager() {
 
       {/* 4. Real-Time Multiplayer Peers */}
       {peers.map((peer) => (
-        <group
-          key={peer.peerId || peer.userId}
-          position={peer.position || [2, 0, 22]}
-          rotation={[0, peer.rotation || 0, 0]}
-        >
-          <CharacterFactory
-            config={{
-              ...(peer.avatar || {}),
-              role: 'PLAYER',
-              displayName: peer.displayName || 'PULSE FAN'
-            }}
-            animationState="LIGHTSTICK_IDLE"
-            lightstickMode={peer.lightstickMode || 'SYNC'}
-            showLabel
-            worldPosition={peer.position || [2, 0, 22]}
-          />
-        </group>
+        <RemotePeerCharacter key={peer.peerId || peer.userId} peer={peer} />
       ))}
     </group>
   );

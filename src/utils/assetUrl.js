@@ -24,3 +24,4 @@ export function assetUrl(path) {
 
   return `${cleanBase}${cleanPath}`;
 }
+

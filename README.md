@@ -106,3 +106,4 @@ This repository is configured for automated CI/CD deployment to **GitHub Pages**
 ## 📄 License
 
 MIT License. Designed & Developed for PULSE//LIVE 2026.
+

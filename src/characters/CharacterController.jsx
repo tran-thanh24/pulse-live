@@ -149,7 +149,9 @@ export function CharacterController({ children }) {
       }
     }
 
-    if (result.isMoving && Math.floor(state.clock.elapsedTime * 5) % 5 === 0) {
+    // Broadcast state for real-time multiplayer (rate-limited in realtimeService)
+    const tick = Math.floor(state.clock.elapsedTime * 6);
+    if ((result.isMoving && tick % 2 === 0) || tick % 6 === 0) {
       realtimeService.broadcastState({
         position: result.position,
         rotation: result.rotation,
