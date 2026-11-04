@@ -17,3 +17,4 @@ description: Use for FPS, crowd optimization, DPR, draw calls, textures, LOD, vi
   - High Desktop: 60 FPS.
   - Medium Desktop: 45–60 FPS.
   - Laptop / Low: 30+ FPS.
+

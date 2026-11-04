@@ -16,7 +16,8 @@ Status snapshot of active subsystems, known constraints, and immediate prioritie
 - **PulseCore Resonance**: Centered kinetic 3D sphere with rotating ring meshes and audio pulse reactions.
 - **Lighting & FX**: Moving heads, spotlights, laser arrays, CO2 jets, confetti cannons, and audience lightstick waves.
 - **Access Control**: Ticket tier enforcement (`GENERAL` vs `VIP`) at plaza gates; player boundary clamping prevents entering artist stage zones.
-- **Studio Mode**: Floating director console to control lighting scenes, manual FX firing, track switching, and LED channel media source assignment.
+- **Dance & Character Action System**: Full action suite (10 dances, reactions, poses, combos) with `AnimationRegistry`, `DanceController`, smooth crossfading, movement lock interrupts, quick actions [1-4], and Action Menu [B/M].
+- **Studio Mode**: Floating director console to control lighting scenes, manual FX firing, track switching, LED channel media assignment, and Character Action controls.
 - **Performance Manager & HUD**: FPS monitoring, frame time, draw calls, triangle counters, and adaptive DPR throttling (0.75x–1.5x).
 - **Deployment**: Vite build with base `/pulse-live/` and GitHub Actions automated deployment to GitHub Pages.
 
@@ -40,3 +41,4 @@ Status snapshot of active subsystems, known constraints, and immediate prioritie
 1. **Targeted Context Reading**: Maintain compact agent navigation layer to keep token consumption minimal.
 2. **Performance Pass V1 Maintenance**: Keep draw calls and geometry count low; verify 45-60 FPS on standard desktop hardware.
 3. **Audio-Visual Stability**: Ensure zero audio overlap and seamless track crossfading across all setlist transitions.
+

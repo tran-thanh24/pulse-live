@@ -228,23 +228,28 @@ export function CrowdManager() {
       }
     }
 
-    let jumpAmp = 0.06 + energy * 0.14;
-    let jumpFreq = 1.4 + bass * 1.2;
+    // Dynamic Audience Energy tiers: 0-30 Idle, 30-60 Clap, 60-80 Lightstick, 80-100 Dance/Jump
+    const audienceEnergy = cStore.audienceEnergyState?.energy || 40;
+    let baseJumpAmp = 0.04;
+    let baseJumpFreq = 1.2;
 
-    if (override === 'jump' || lightingScene === 'DROP') {
-      jumpAmp = 0.28 + bass * 0.2;
-      jumpFreq = 2.8;
-    } else if (override === 'wave' || lightingScene === 'CHORUS') {
-      jumpAmp = 0.14 + energy * 0.12;
-      jumpFreq = 1.9;
+    if (audienceEnergy > 80 || override === 'dance_jump' || override === 'jump' || lightingScene === 'DROP') {
+      baseJumpAmp = 0.28 + bass * 0.22;
+      baseJumpFreq = 2.8;
+    } else if (audienceEnergy > 60 || override === 'dance_basic' || override === 'wave' || lightingScene === 'CHORUS') {
+      baseJumpAmp = 0.16 + energy * 0.14;
+      baseJumpFreq = 2.0;
+    } else if (audienceEnergy > 30 || override === 'clap') {
+      baseJumpAmp = 0.08 + energy * 0.08;
+      baseJumpFreq = 1.6;
     } else if (lightingScene === 'BLACKOUT') {
-      jumpAmp = 0.015;
-      jumpFreq = 0.6;
+      baseJumpAmp = 0.015;
+      baseJumpFreq = 0.6;
     }
 
     if (reduceMotion) {
-      jumpAmp *= 0.25;
-      jumpFreq *= 0.5;
+      baseJumpAmp *= 0.25;
+      baseJumpFreq *= 0.5;
     }
 
     // Interleaved Grouping: 2 groups when moving or on Low/Medium (Rule 11)
@@ -258,12 +263,34 @@ export function CrowdManager() {
       }
 
       const fan = crowdData[i];
-      const bounce = Math.abs(Math.sin(t * fan.speed * jumpFreq + fan.phase)) * jumpAmp;
       const s = fan.scale;
+
+      // Group A (Basic Dance), Group B (Lightstick Wave), Group C (Hype Jump)
+      const groupType = i % 3;
+      let fanAmp = baseJumpAmp;
+      let fanFreq = baseJumpFreq;
+      let fanWaveFactor = 1.0;
+
+      if (groupType === 0) {
+        // Group A: Basic Dance rhythm
+        fanAmp *= 0.85;
+        fanFreq *= 1.0;
+      } else if (groupType === 1) {
+        // Group B: Lightstick Wave sway
+        fanAmp *= 0.75;
+        fanFreq *= 0.9;
+        fanWaveFactor = 1.6;
+      } else {
+        // Group C: High Energy Jump
+        fanAmp *= 1.25;
+        fanFreq *= 1.15;
+      }
+
+      const bounce = Math.abs(Math.sin(t * fan.speed * fanFreq + fan.phase)) * fanAmp;
 
       // 1. Body (Male broader vs Female slender silhouette)
       dummy.position.set(fan.x, (0.68 + bounce) * s, fan.z);
-      dummy.rotation.set(0, fan.rotY, 0);
+      dummy.rotation.set(0, fan.rotY + (groupType === 1 ? Math.sin(t * 2.5 + fan.phase) * 0.1 : 0), 0);
       dummy.scale.set(fan.isFemale ? 0.88 * s : 1.04 * s, s, s);
       dummy.updateMatrix();
       bodyMeshRef.current.setMatrixAt(i, dummy.matrix);
@@ -276,7 +303,7 @@ export function CrowdManager() {
       headMeshRef.current.setMatrixAt(i, dummy.matrix);
 
       // 3. Synchronized Pulse Lightstick
-      const waveX = Math.sin(t * 4.2 + fan.phase) * (reduceMotion ? 0.08 : 0.28);
+      const waveX = Math.sin(t * (3.8 * fanFreq) + fan.phase) * (reduceMotion ? 0.08 : 0.28 * fanWaveFactor);
       dummy.position.set(
         fan.x + Math.cos(fan.rotY) * 0.3 + waveX * 0.25,
         (1.68 + bounce * 1.25) * s,

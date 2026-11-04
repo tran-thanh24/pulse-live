@@ -12,3 +12,4 @@ description: Use for Player, Artist, Crowd, male/female character, animations, o
   - Far crowd (>15m): `InstancedMesh` with baked color variations.
   - Never instantiate individual SkinnedMesh + AnimationMixer pairs for background crowd NPCs.
 - **Locomotion Boundaries**: Character velocity, jumping arc, and acceleration must respect `CharacterRules.js`.
+

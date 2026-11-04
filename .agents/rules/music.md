@@ -10,3 +10,4 @@ description: Use when modifying MusicEngine, playlist, setlist, audio, or timeli
 - **Track Transitions**: Always transition audio via `MusicEngine.crossfadeToTrack()`. Never abruptly cut audio without fade curves.
 - **Audio Analysis**: FFT frequency analysis (bass, mid, treble, waveform) is updated once per frame in `MusicEngine.updateAnalysis()` and read reactively without mutating global React state.
 - **Setlist Sequencing**: Setlist flow (`MUSIC`, `MC`, `ENCORE`, `FINALE`) is managed exclusively by `SetlistManager` and sequenced by `ShowDirector`.
+

@@ -7,13 +7,15 @@ import {
   Sliders,
   Music,
   Flag,
-  Video
+  Video,
+  Flame
 } from 'lucide-react';
 import { useConcertStore } from '../store/concertStore';
 import { useUserStore } from '../store/userStore';
 import { MiniMap } from './MiniMap';
 import { InteractionPrompt } from './InteractionPrompt';
 import { CinemaMVPiP } from './CinemaMVPiP';
+import { ActionMenu } from './ActionMenu';
 import { achievementSystem } from '../systems/AchievementSystem';
 import { audienceEnergySystem } from '../systems/AudienceEnergySystem';
 import { audioManager } from '../core/AudioManager';
@@ -54,6 +56,8 @@ export function HUD() {
   const preShowCountdown = useConcertStore((s) => s.preShowCountdown);
   const cinemaMvOpen = useConcertStore((s) => s.cinemaMvOpen);
   const setCinemaMvOpen = useConcertStore((s) => s.setCinemaMvOpen);
+  const actionMenuOpen = useConcertStore((s) => s.actionMenuOpen);
+  const toggleActionMenu = useConcertStore((s) => s.toggleActionMenu);
 
   const settings = useUserStore((s) => s.settings);
   const ticket = useUserStore((s) => s.ticket);
@@ -347,22 +351,38 @@ export function HUD() {
 
           {/* BOTTOM-RIGHT: PULSE LIGHT MODE + REACTION BUTTONS */}
           <div className="pointer-events-auto flex flex-col items-end gap-2">
-            <button
-              onClick={handleLightstickToggle}
-              className="glass-pill px-3 py-1 text-[10px] font-heading font-bold flex items-center gap-1.5 border transition cursor-pointer"
-              style={{
-                borderColor:
-                  lightstickMode !== 'OFF' ? lightstickColor : 'rgba(255,255,255,0.14)',
-                boxShadow:
-                  lightstickMode !== 'OFF' ? `0 0 12px ${lightstickColor}44` : 'none'
-              }}
-            >
-              <Sparkles
-                className="w-3 h-3"
-                style={{ color: lightstickMode !== 'OFF' ? lightstickColor : '#A1A1AA' }}
-              />
-              <span>[F] PULSE LIGHT: {lightstickMode}</span>
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => {
+                  try {
+                    audioManager.playUISound('click');
+                  } catch {}
+                  toggleActionMenu();
+                }}
+                className="glass-pill px-3 py-1 text-[10px] font-heading font-bold flex items-center gap-1.5 border border-purple-500/40 hover:border-purple-400 bg-purple-950/40 text-purple-200 transition cursor-pointer shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+                title="Action & Dance Menu (B or M)"
+              >
+                <Flame className="w-3 h-3 text-pink-400" />
+                <span>[B] DANCE & ACTIONS</span>
+              </button>
+
+              <button
+                onClick={handleLightstickToggle}
+                className="glass-pill px-3 py-1 text-[10px] font-heading font-bold flex items-center gap-1.5 border transition cursor-pointer"
+                style={{
+                  borderColor:
+                    lightstickMode !== 'OFF' ? lightstickColor : 'rgba(255,255,255,0.14)',
+                  boxShadow:
+                    lightstickMode !== 'OFF' ? `0 0 12px ${lightstickColor}44` : 'none'
+                }}
+              >
+                <Sparkles
+                  className="w-3 h-3"
+                  style={{ color: lightstickMode !== 'OFF' ? lightstickColor : '#A1A1AA' }}
+                />
+                <span>[F] LIGHT: {lightstickMode}</span>
+              </button>
+            </div>
 
             <div className="glass-pill px-2.5 py-1.5 flex items-center gap-1.5">
               {REACTION_BUTTONS.map((btn) => (
@@ -382,6 +402,9 @@ export function HUD() {
 
       {/* Floating Picture-in-Picture Cinema MV */}
       <CinemaMVPiP />
+
+      {/* Action & Dance Menu Overlay */}
+      <ActionMenu />
     </div>
   );
 }

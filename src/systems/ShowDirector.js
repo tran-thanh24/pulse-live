@@ -2,6 +2,8 @@ import { musicEngine } from '../core/MusicEngine';
 import { eventBus } from '../core/EventBus';
 import { concertTimeline } from './ConcertTimeline';
 import { audienceEnergySystem } from './AudienceEnergySystem';
+import { animationRegistry } from '../characters/AnimationRegistry';
+import { danceController } from '../characters/DanceController';
 import { achievementSystem } from './AchievementSystem';
 import { audioManager } from '../core/AudioManager';
 import { MUSIC_MANIFEST } from '../data/musicManifest';
@@ -73,12 +75,28 @@ class ShowDirector {
           }
           break;
         }
-        case 'artist': {
-          state.setArtistAnimation(cue.value || 'SING');
+        case 'artist':
+        case 'ARTIST_ACTION': {
+          const act = animationRegistry.getAction(cue.action || cue.value);
+          state.setArtistAnimation(act ? act.clip : (cue.value || 'SING'));
           break;
         }
-        case 'crowd': {
-          state.setCrowdBehaviorOverride(cue.value || 'wave');
+        case 'GROUP_ACTION': {
+          const act = animationRegistry.getAction(cue.action || cue.value);
+          state.setArtistAnimation(act ? act.clip : (cue.value || 'DANCE_KPOP'));
+          break;
+        }
+        case 'crowd':
+        case 'CROWD_ACTION': {
+          const act = animationRegistry.getAction(cue.action || cue.value);
+          state.setCrowdBehaviorOverride(act ? act.id : (cue.value || 'wave'));
+          break;
+        }
+        case 'CHARACTER_ACTION': {
+          const act = animationRegistry.getAction(cue.action || cue.value);
+          if (act) {
+            danceController.playAction(act.id);
+          }
           break;
         }
         case 'lightstick': {

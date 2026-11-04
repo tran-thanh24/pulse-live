@@ -61,3 +61,4 @@ UPDATE docs/CURRENT_STATE.md (brief summary)
 - Status: `docs/CURRENT_STATE.md`
 - Decisions: `docs/DECISIONS.md`
 *(Note: Keep references as text pointers; never use markdown links that trigger full-file context inlining).*
+

@@ -11,3 +11,4 @@ description: Use when modifying LED screens, LED media, native video, YouTube me
 - **Native Video**: Rendered via HTML5 `<video>` + `THREE.VideoTexture` supporting Cover/Contain UV fitting and WebGL depth testing.
 - **YouTube Decoupling**: YouTube iframes cannot feed raw WebGL textures. Stage screens use pure WebGL `CanvasTexture` audio-reactive visualizers, while YouTube MV streams via the floating `CinemaMVPiP` HUD window.
 - **Clock Synchronization**: Media sources with `syncToMusic: true` synchronize continuously with `MusicEngine.getCurrentTime()`.
+

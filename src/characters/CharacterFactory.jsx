@@ -16,6 +16,9 @@ import { useUserStore } from '../store/userStore';
 export function CharacterFactory({
   config,
   animationState = 'IDLE',
+  previousState = null,
+  crossfadeAlpha = 1.0,
+  timeScale = 1.0,
   lightstickMode = 'OFF',
   showLabel = true,
   labelBadge = null,
@@ -89,10 +92,13 @@ export function CharacterFactory({
       leftLegRef,
       rightLegRef,
       state: animationState,
+      previousState,
+      crossfadeAlpha,
       hasLightstick,
       reduceMotion,
       baseY: 0,
-      phaseOffset
+      phaseOffset,
+      timeScale
     });
 
     if (isPreview && groupRef.current) {

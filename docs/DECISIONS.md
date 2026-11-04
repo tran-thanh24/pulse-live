@@ -37,3 +37,4 @@ Long-term architectural principles and non-negotiable design invariants.
 - No React state churn in the 60fps render loop; use mutable store references or event callbacks for frame updates.
 - Clamp DPR: Maximum 1.5 on High, 1.25 on Medium, 1.0 on Low (never let Retina displays render at unconstrained DPR 2–3).
 - Crowd rendering must use InstancedMesh or simplified geometry for distant spectators; never allocate individual SkinnedMesh + AnimationMixer pairs for background crowd.
+

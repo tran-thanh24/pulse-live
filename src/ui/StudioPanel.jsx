@@ -37,6 +37,9 @@ import { StudioLEDControl } from './StudioLEDControl';
 import { CAMERA_PRESETS } from '../systems/CameraDirector';
 import { PULSE_WAVE_PATTERNS } from '../systems/LightstickSystem';
 import { eventBus } from '../core/EventBus';
+import { animationRegistry } from '../characters/AnimationRegistry';
+import { danceController } from '../characters/DanceController';
+import { CORTIS_MEMBERS } from '../data/artists';
 
 /**
  * StudioPanel: Operator & Creator Console for PULSE//LIVE 2026
@@ -110,6 +113,12 @@ export function StudioPanel() {
   const [artistTargetZone, setArtistTargetZone] = useState(
     () => stageNavigationSystem.currentTargetZone
   );
+
+  // Character Action Studio state
+  const [actionRole, setActionRole] = useState('ARTIST'); // 'PLAYER' | 'ARTIST' | 'CROWD'
+  const [selectedArtistAction, setSelectedArtistAction] = useState('DANCE_KPOP');
+  const [selectedCrowdAction, setSelectedCrowdAction] = useState('dance_jump');
+  const [crowdIntensity, setCrowdIntensity] = useState(70);
 
   useEffect(() => {
     const unsubLoaded = eventBus.on('timeline:loaded', ({ cues: loaded }) =>
@@ -235,12 +244,13 @@ export function StudioPanel() {
       </div>
 
       {/* Studio Navigation Tabs */}
-      <div className="grid grid-cols-4 gap-1 p-2 bg-[#070816]/80 border-b border-white/10">
+      <div className="grid grid-cols-5 gap-1 p-2 bg-[#070816]/80 border-b border-white/10">
         {[
           { id: 'MUSIC', label: 'Setlist & Audio', icon: ListMusic },
           { id: 'LED_VIDEO', label: 'LED Video', icon: Video },
           { id: 'STAGE', label: 'Stage & Nav', icon: Sparkles },
-          { id: 'CAMERA', label: 'Cam & Crowd', icon: Camera }
+          { id: 'CAMERA', label: 'Cam & Crowd', icon: Camera },
+          { id: 'ACTIONS', label: 'Actions & Dance', icon: Activity }
         ].map((tab) => {
           const Icon = tab.icon;
           return (
@@ -847,6 +857,224 @@ export function StudioPanel() {
                 ))}
               </div>
             </div>
+          </>
+        )}
+
+        {/* ============================================================
+            TAB 5: CHARACTER ACTION CONTROL (PLAYER, ARTIST, CROWD)
+            ============================================================ */}
+        {activeTab === 'ACTIONS' && (
+          <>
+            {/* Sub-selector for Role */}
+            <div className="grid grid-cols-3 gap-1 p-1 bg-white/[0.04] rounded-xl border border-white/10">
+              {['ARTIST', 'PLAYER', 'CROWD'].map((r) => (
+                <button
+                  key={r}
+                  onClick={() => setActionRole(r)}
+                  className={`py-1.5 rounded-lg font-heading text-[11px] font-bold transition cursor-pointer ${
+                    actionRole === r
+                      ? 'bg-cyan-500 text-black shadow-md'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {r} CONTROL
+                </button>
+              ))}
+            </div>
+
+            {/* 1. ARTIST ACTION CONTROL */}
+            {actionRole === 'ARTIST' && (
+              <div className="space-y-3">
+                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-2">
+                  <div className="text-[10px] font-heading tracking-wider text-amber-400 uppercase">
+                    CORTIS ARTIST DANCE & STAGE CHOREOGRAPHY
+                  </div>
+                  <div className="text-[11px] text-zinc-400">
+                    Active Animation: <span className="font-mono text-cyan-300 font-bold">{useConcertStore.getState().artistAnimation}</span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1.5 pt-1">
+                    {[
+                      { id: 'DANCE_KPOP', label: 'K-Pop Wave' },
+                      { id: 'DANCE_POP', label: 'Pop Lock' },
+                      { id: 'DANCE_HIPHOP', label: 'Hip-Hop Bounce' },
+                      { id: 'DANCE_BASIC', label: 'Basic Dance' },
+                      { id: 'DANCE_SPIN', label: 'Spin Flourish' },
+                      { id: 'FINAL_POSE', label: 'Climax Pose' },
+                      { id: 'SING', label: 'Live Vocal' },
+                      { id: 'TALK', label: 'MC Talk' },
+                      { id: 'IDLE', label: 'Rest Idle' }
+                    ].map((act) => (
+                      <button
+                        key={act.id}
+                        onClick={() => {
+                          setSelectedArtistAction(act.id);
+                          useConcertStore.getState().setArtistAnimation(act.id);
+                        }}
+                        className={`py-2 px-1 rounded-lg font-heading font-semibold text-[10px] border transition cursor-pointer ${
+                          useConcertStore.getState().artistAnimation === act.id
+                            ? 'bg-amber-500/30 border-amber-400 text-amber-200'
+                            : 'bg-white/[0.03] border-white/10 text-zinc-300 hover:text-white'
+                        }`}
+                      >
+                        {act.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between border-t border-white/10">
+                    <button
+                      onClick={() => {
+                        useConcertStore.getState().setArtistAnimation('DANCE_KPOP');
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-black font-heading font-bold text-[10px] cursor-pointer"
+                    >
+                      TRIGGER SYNCHRONIZED WAVE
+                    </button>
+                    <button
+                      onClick={() => useConcertStore.getState().setArtistAnimation('SING')}
+                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-heading text-[10px] cursor-pointer"
+                    >
+                      RESET TO VOCAL
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 2. PLAYER ACTION CONTROL */}
+            {actionRole === 'PLAYER' && (
+              <div className="space-y-3">
+                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-2">
+                  <div className="text-[10px] font-heading tracking-wider text-cyan-400 uppercase">
+                    PLAYER AVATAR ACTION
+                  </div>
+                  <div className="text-[11px] text-zinc-400">
+                    Current Pose: <span className="font-mono text-cyan-300 font-bold">{useConcertStore.getState().playerPose || 'idle'}</span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1.5 pt-1">
+                    {[
+                      { id: 'dance_basic', label: 'Basic Dance' },
+                      { id: 'dance_groove', label: 'Groove Roll' },
+                      { id: 'dance_pop', label: 'Pop Lock' },
+                      { id: 'dance_hiphop', label: 'Hip-Hop' },
+                      { id: 'dance_kpop', label: 'K-Pop' },
+                      { id: 'dance_freestyle', label: 'Freestyle' },
+                      { id: 'dance_jump', label: 'Hype Jump' },
+                      { id: 'dance_side_step', label: 'Side Step' },
+                      { id: 'final_pose', label: 'Hero Pose' }
+                    ].map((act) => (
+                      <button
+                        key={act.id}
+                        onClick={() => danceController.playAction(act.id, 'PLAYER')}
+                        className={`py-2 px-1 rounded-lg font-heading font-semibold text-[10px] border transition cursor-pointer ${
+                          useConcertStore.getState().playerPose?.toLowerCase() === act.id
+                            ? 'bg-cyan-500/30 border-cyan-400 text-cyan-200'
+                            : 'bg-white/[0.03] border-white/10 text-zinc-300 hover:text-white'
+                        }`}
+                      >
+                        {act.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between border-t border-white/10">
+                    <button
+                      onClick={() => danceController.playRandomDance('PLAYER')}
+                      className="px-3 py-1.5 rounded-lg bg-purple-600/40 border border-purple-500/50 text-purple-200 font-heading font-bold text-[10px] cursor-pointer"
+                    >
+                      RANDOM DANCE 🎲
+                    </button>
+                    <button
+                      onClick={() => danceController.stopAction()}
+                      className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-heading text-[10px] cursor-pointer"
+                    >
+                      STOP ACTION
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 3. CROWD ACTION CONTROL */}
+            {actionRole === 'CROWD' && (
+              <div className="space-y-3">
+                <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-2.5">
+                  <div className="text-[10px] font-heading tracking-wider text-pink-400 uppercase">
+                    CROWD DANCE & STADIUM ENERGY
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] text-zinc-400 uppercase block mb-1">
+                      Crowd Action:
+                    </label>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {[
+                        { id: 'dance_jump', label: 'Hype Jump' },
+                        { id: 'dance_basic', label: 'Basic Dance' },
+                        { id: 'wave', label: 'Lightstick Wave' },
+                        { id: 'clap', label: 'Stadium Clap' },
+                        { id: 'auto', label: 'Dynamic Auto' }
+                      ].map((act) => (
+                        <button
+                          key={act.id}
+                          onClick={() => {
+                            setSelectedCrowdAction(act.id);
+                            useConcertStore.getState().setCrowdBehaviorOverride(act.id === 'auto' ? null : act.id);
+                          }}
+                          className={`py-1.5 px-1 rounded-lg font-heading text-[10px] border transition cursor-pointer ${
+                            selectedCrowdAction === act.id
+                              ? 'bg-pink-500/30 border-pink-400 text-pink-200'
+                              : 'bg-white/[0.03] border-white/10 text-zinc-300 hover:text-white'
+                          }`}
+                        >
+                          {act.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 pt-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400">
+                      <span>CROWD INTENSITY:</span>
+                      <span className="font-mono text-pink-400 font-bold">{crowdIntensity}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      value={crowdIntensity}
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        setCrowdIntensity(val);
+                        useConcertStore.getState().setAudienceEnergyState({
+                          ...useConcertStore.getState().audienceEnergyState,
+                          energy: val
+                        });
+                      }}
+                      className="w-full accent-pink-500 cursor-pointer"
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      useConcertStore.getState().setCrowdBehaviorOverride(selectedCrowdAction === 'auto' ? null : selectedCrowdAction);
+                      useConcertStore.getState().setAudienceEnergyState({
+                        ...useConcertStore.getState().audienceEnergyState,
+                        energy: crowdIntensity
+                      });
+                      if (crowdIntensity > 80) {
+                        useConcertStore.getState().triggerPulseWave('CENTER_OUT', '#EC4899');
+                      }
+                    }}
+                    className="w-full py-2 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-heading font-bold text-[10px] shadow-lg cursor-pointer"
+                  >
+                    TRIGGER CROWD SURGE
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

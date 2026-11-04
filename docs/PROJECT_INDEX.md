@@ -29,6 +29,9 @@ Compact map of subsystems, core files, responsibilities, and primary dependencie
 - **Dependencies**: Three.js, `stageConfig`, `LEDMediaManager`.
 
 ### CHARACTER
+- `src/characters/AnimationRegistry.js`: Action & dance metadata catalog, categories, roles, and BPM timeScales.
+- `src/characters/DanceController.js`: Action state machine, crossfade timing, movement lock interrupts, and combo queues.
+- `src/characters/CharacterAnimator.jsx`: 3D procedural skeletal/limb engine with smooth crossfading for all dances.
 - `src/characters/CharacterController.jsx`: 3D procedural character rig, limb animation, nameplates.
 - `src/characters/CharacterFactory.jsx`: Factory generating artists, player, or NPCs.
 - `src/characters/CharacterAppearance.js`: Appearance palette, clothing, skin color, accessories.
@@ -37,7 +40,8 @@ Compact map of subsystems, core files, responsibilities, and primary dependencie
 - **Dependencies**: Three.js, `concertStore`.
 
 ### PLAYER
-- `src/characters/Player.jsx`: Local user avatar, 3rd-person camera follow target, input handler.
+- `src/characters/player/PlayerCharacter.jsx`: Local user avatar, dance state crossfade, 3rd-person follow target.
+- `src/ui/ActionMenu.jsx`: Radial / drawer action menu (hotkey [B] / [M], quick action slots 1-4, random dance).
 - `src/systems/MovementSystem.js`: Locomotion velocity, jumping, collision response.
 - `src/ui/AvatarCreator.jsx`: Character customization screen before entering arena.
 - **Dependencies**: `CollisionSystem`, `AccessControlSystem`, `CameraController`.
@@ -110,3 +114,4 @@ Compact map of subsystems, core files, responsibilities, and primary dependencie
 - `src/utils/assetUrl.js`: URL helper resolving assets relative to `import.meta.env.BASE_URL`.
 - `.github/workflows/deploy.yml`: GitHub Actions automated deployment to GitHub Pages.
 - **Dependencies**: Vite, GitHub Pages.
+

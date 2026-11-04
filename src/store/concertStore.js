@@ -109,6 +109,9 @@ export const useConcertStore = create((set, get) => ({
   // Cinema MV Picture-in-Picture state
   cinemaMvOpen: true,
 
+  // Player Dance & Action Menu state
+  actionMenuOpen: false,
+
   // Reactions & Moments
   reactions: [],
   lastReactionTime: 0,
@@ -277,6 +280,8 @@ export const useConcertStore = create((set, get) => ({
   },
 
   setCinemaMvOpen: (cinemaMvOpen) => set({ cinemaMvOpen }),
+  setActionMenuOpen: (actionMenuOpen) => set({ actionMenuOpen }),
+  toggleActionMenu: () => set((s) => ({ actionMenuOpen: !s.actionMenuOpen })),
 
   triggerReaction: (type, emoji, label) => {
     const now = Date.now();

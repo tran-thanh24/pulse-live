@@ -10,6 +10,7 @@ import { realtimeService, presenceService } from '../services/realtime';
 import { useConcertStore } from '../store/concertStore';
 import { useUserStore } from '../store/userStore';
 import { performanceManager } from '../systems/PerformanceManager';
+import { danceController } from './DanceController';
 
 /**
  * CharacterController: Handles keyboard/joystick movement (WASD / Arrows / Shift / Space),
@@ -28,12 +29,20 @@ export function CharacterController({ children }) {
       const uStore = useUserStore.getState();
 
       if (e.code === 'Escape') {
-        if (cStore.activeModal) {
+        if (cStore.actionMenuOpen) {
+          cStore.setActionMenuOpen(false);
+        } else if (cStore.activeModal) {
           audioManager.playUISound('click');
           cStore.setActiveModal(null);
         } else if (cStore.studioMode) {
           cStore.setStudioMode(false);
         }
+        return;
+      }
+
+      if (e.code === 'KeyB' || e.code === 'KeyM') {
+        audioManager.playUISound('click');
+        cStore.toggleActionMenu();
         return;
       }
 
@@ -59,29 +68,25 @@ export function CharacterController({ children }) {
         audioManager.playUISound('click');
         cStore.toggleStudioMode();
       } else if (e.code === 'Digit1') {
-        if (cStore.triggerReaction('CLAP', '👏', 'CLAP')) {
-          audioManager.playUISound('click');
-          audienceEnergySystem.addReactionEnergy('CLAP');
-          achievementSystem.unlock('FAN_MOMENT');
-        }
+        danceController.playQuickAction(0);
+        cStore.triggerReaction('CLAP', '👏', 'CLAP');
+        audienceEnergySystem.addReactionEnergy('CLAP');
+        achievementSystem.unlock('FAN_MOMENT');
       } else if (e.code === 'Digit2') {
-        if (cStore.triggerReaction('HEART', '❤️', 'HEART')) {
-          audioManager.playUISound('click');
-          audienceEnergySystem.addReactionEnergy('HEART');
-          achievementSystem.unlock('FAN_MOMENT');
-        }
+        danceController.playQuickAction(1);
+        cStore.triggerReaction('HEART', '❤️', 'HEART');
+        audienceEnergySystem.addReactionEnergy('HEART');
+        achievementSystem.unlock('FAN_MOMENT');
       } else if (e.code === 'Digit3') {
-        if (cStore.triggerReaction('HYPE', '🔥', 'HYPE')) {
-          audioManager.playUISound('click');
-          audienceEnergySystem.addReactionEnergy('HYPE');
-          achievementSystem.unlock('FAN_MOMENT');
-        }
+        danceController.playQuickAction(2);
+        cStore.triggerReaction('HYPE', '🔥', 'HYPE');
+        audienceEnergySystem.addReactionEnergy('HYPE');
+        achievementSystem.unlock('FAN_MOMENT');
       } else if (e.code === 'Digit4') {
-        if (cStore.triggerReaction('PULSE', '⚡', 'PULSE')) {
-          audioManager.playUISound('click');
-          audienceEnergySystem.addReactionEnergy('PULSE');
-          achievementSystem.unlock('FAN_MOMENT');
-        }
+        danceController.playQuickAction(3);
+        cStore.triggerReaction('PULSE', '⚡', 'PULSE');
+        audienceEnergySystem.addReactionEnergy('PULSE');
+        achievementSystem.unlock('FAN_MOMENT');
       }
     };
 
@@ -116,6 +121,10 @@ export function CharacterController({ children }) {
         uStore.showInfoToast(restrictedTitle, restrictedMessage, '#EF4444');
       }
     );
+
+    if (result.isMoving) {
+      danceController.onPlayerMove();
+    }
 
     if (groupRef.current) {
       groupRef.current.position.set(
